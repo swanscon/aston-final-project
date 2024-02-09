@@ -4,6 +4,10 @@ import { useState, useEffect } from "react";
 export default function BrowseGames() {
     const [loadedGames, setLoadedGames] = useState([]);
 
+    const DUMMY_DATA = {
+        
+    }
+
     useEffect(() => {
         fetch('http://localhost:8081/api/game')
             .then(response => response.json())
