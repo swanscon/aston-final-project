@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:8081']
+
+  - job_name: 'discovery-server'
+    static_configs:
+      - targets: ['discovery-server:8761']
+
+  - job_name: 'game-service'
+    static_configs:
+      - targets: ['game-service:8181']
+
+  - job_name: 'event-service'
+    static_configs:
+      - targets: ['event-service:8182']
+
+  - job_name: 'attendee-service'
+    static_configs:
+      - targets: ['attendee-service:8183']
+
+  - job_name: 'invitation-service'
+    static_configs:
+      - targets: ['invitation-service:8184']
