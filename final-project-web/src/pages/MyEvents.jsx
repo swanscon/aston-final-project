@@ -2,16 +2,17 @@ import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import MainNav from "../components/MainNav";
 import { useEffect, useState } from "react";
+import DummyData from "../utils/DummyData";
 
 export default function MyEvents() {
 	const [loadedEvents, setLoadedEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		fetch("http://localhost:8081/api/event")
-			.then((response) => response.json())
-			.then((data) => setLoadedEvents(data))
-			.catch((error) => console.error("There was an error fetching event data", error));
-	}, []);
+    useEffect(() => {
+        const data = DummyData();
+        setLoadedEvents(data.events);
+        setIsLoading(false);
+    }, []);
 
     function handleDateFormat(formattableDate) {
         const date = new Date(formattableDate);
@@ -23,22 +24,31 @@ export default function MyEvents() {
 
 	return (
 		<>
-			<MainNav />
-			<div style={{ border: "solid orange 2px" }}>
-				<h1>My Events</h1>
-
-				<NavLink to="/events/new">
-					<Button style={{cursor: 'pointer'}}>Create a New Event</Button>
-				</NavLink>
-
-				<ul>
-					{loadedEvents.map((event) => (
-						<li key={event.id}>
-							{event.name}: {handleDateFormat(event.eventDate)}
-						</li>
-					))}
-				</ul>
-			</div>
-		</>
+            <MainNav />
+            <div style={{ border: "solid orange 2px" }}>
+                {isLoading ? (
+                    <>
+                        <h1>My Events</h1>
+                        <p>Loading data...</p>
+                    </>
+                ) : (
+                    <>
+                        <h1>My Events</h1>
+                        <NavLink to="/events/new">
+                            <Button style={{ cursor: "pointer" }}>
+                                Create a New Event
+                            </Button>
+                        </NavLink>
+                        <ul style={{ listStyle: "none" }}>
+                            {loadedEvents.map((event) => (
+                                <li key={event.id}>
+                                    {event.name} - {handleDateFormat(event.eventDate)}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                )}
+            </div>
+        </>
 	);
 }

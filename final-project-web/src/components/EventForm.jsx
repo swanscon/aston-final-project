@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,38 +11,8 @@ export default function EventForm() {
 	const [durationHours, setDurationHours] = useState("00");
 	const [durationMinutes, setDurationMinutes] = useState("00");
 	const [description, setDescription] = useState("");
+	const [attendees, setAttendees] = useState([]);
 
-	useEffect(() => {
-		// Fetch the game names and IDs
-		fetch("http://localhost:8081/api/game")
-			.then((response) => response.json())
-			.then((data) => setGames(data))
-			.catch((error) => console.error("Error fetching games:", error));
-	}, []);
-
-    function addEventHandler(eventData) {
-        fetch(
-            "http://localhost:8081/api/event",
-            {
-                method: 'POST',
-                body: JSON.stringify(eventData),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-            .then(response => {
-                if(!response.ok) {
-                    throw new Error('Network response was not okay: ' + response.statusText);
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log('Success: ', data);
-            })
-            .catch(error => {
-                console.error('Error: ', error);
-            });
-    }
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -53,7 +23,7 @@ export default function EventForm() {
 			duration: `${durationHours} Hour ${durationMinutes} Minutes`,
 			description,
 		};
-		addEventHandler(eventData);
+		//ADD EVENT HANDLER
         //ADD ATTENDEES HANDLER
 		console.log(eventData);
 	};
