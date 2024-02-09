@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import MainNav from "../components/MainNav";
-import DummyData from "../utils/DummyData";
+import { useData } from "../context/DataProvider";
 
 export default function BrowseGames() {
-    const [loadedGameTypes, setLoadedGameTypes] = useState([]);
-    const [loadedGames, setLoadedGames] = useState([]);
+    const { data } = useData();
     const [isLoading, setIsLoading] = useState(true);
 
+
     useEffect(() => {
-        const data = DummyData();
-        setLoadedGameTypes(data.gameTypes);
-        setLoadedGames(data.games);
-        setIsLoading(false);
-    }, []);
+        if (
+            data.games &&
+            data.gameTypes &&
+            data.games.length > 0 &&
+            data.gameTypes.length > 0
+        ) {
+            setIsLoading(false);
+        }
+    }, [data]);
 
     const getGamesByType = () => {
-        return loadedGameTypes.map((type) => ({
+        return data.gameTypes.map((type) => ({
             ...type,
-            games: loadedGames.filter((game) => game.gameTypeRequest.id === type.id),
+            games: data.games.filter(
+                (game) => game.gameTypeRequest.id === type.id
+            ),
         }));
     };
 
@@ -39,7 +45,8 @@ export default function BrowseGames() {
                                 <ul style={{ listStyle: "none" }}>
                                     {type.games.map((game) => (
                                         <li key={game.id}>
-                                            <strong>{game.name}:</strong> {game.description}
+                                            <strong>{game.name}:</strong>{" "}
+                                            {game.description}
                                         </li>
                                     ))}
                                 </ul>

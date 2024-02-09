@@ -2,17 +2,19 @@ import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import MainNav from "../components/MainNav";
 import { useEffect, useState } from "react";
-import DummyData from "../utils/DummyData";
+import { useData } from "../context/DataProvider";
 
 export default function MyEvents() {
+	const { data } = useData();
 	const [loadedEvents, setLoadedEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const data = DummyData();
-        setLoadedEvents(data.events);
-        setIsLoading(false);
-    }, []);
+        if(data.events) {
+			setLoadedEvents(data.events);
+			setIsLoading(false);
+		}
+    }, [data.events]);
 
     function handleDateFormat(formattableDate) {
         const date = new Date(formattableDate);
