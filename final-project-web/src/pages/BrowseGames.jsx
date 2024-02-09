@@ -5,8 +5,8 @@ export default function BrowseGames() {
     const [loadedGames, setLoadedGames] = useState([]);
 
     const DUMMY_DATA = {
-        
-    }
+        'testing': 123
+    };
 
     useEffect(() => {
         fetch('http://localhost:8081/api/game')
