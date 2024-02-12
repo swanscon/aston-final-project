@@ -5,7 +5,7 @@ export default function Home() {
 		<>
 			<MainNav />
 			<div style={{ border: "solid blue 2px" }}>
-				<h1>Home Page</h1>
+				<h1>Home Page!</h1>
 			</div>
 		</>
 	);
