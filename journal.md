@@ -11,3 +11,6 @@
 final-project parent directory.
 - **Dependencies** - Added starter dependencies to microservices and parent
 module pom.xml files.
+  
+## 2/12/24
+- **Remote Upstream** - Set up on Dell PC for origin/master branch
