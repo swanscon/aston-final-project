@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useData } from "../context/DataProvider"; // Assuming this is your context import
@@ -44,15 +44,12 @@ const EventForm = ({eventDetails, onEventChange}) => {
         if (e.target.name === 'hours' || e.target.name === 'minutes') {
             const newHours = e.target.name === 'hours' ? e.target.value : hours;
             const newMinutes = e.target.name === 'minutes' ? e.target.value : minutes;
-            
-            // Update the state with the new values
+
             if (e.target.name === 'hours') {
                 setHours(newHours);
             } else if (e.target.name === 'minutes') {
                 setMinutes(newMinutes);
             }
-    
-            // Use the new values directly for calculating duration
             const duration = handleDurationFormat(newHours, newMinutes);
             onEventChange({
                 ...eventDetails,

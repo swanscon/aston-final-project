@@ -3,10 +3,10 @@ import { Button } from "react-bootstrap";
 import MainNav from "../components/MainNav";
 import EventForm from "../components/EventForm";
 import AttendeeForm from "../components/AttendeeForm";
-import { useData } from "../context/DataProvider"; // Assuming this is your context
+import { useData } from "../context/DataProvider";
 
 export default function NewEvent() {
-	const { data, setData } = useData(); // Use context if needed
+	const { data, setData } = useData();
 	const [eventDetails, setEventDetails] = useState({
 		id: "",
 		gameId: "",
@@ -15,11 +15,40 @@ export default function NewEvent() {
 		duration: "",
 		description: "",
 	});
-	const [attendees, setAttendees] = useState([{ firstName: "", lastName: "" }]);
+	const [attendees, setAttendees] = useState([{ id: "", firstName: "", lastName: "", status: "Pending" }]);
 
 	const handleSubmit = () => {
-		console.log(eventDetails, attendees);
-	};
+        const newEventId = String(Math.max(...data.events.map(e => parseInt(e.id, 10))) + 1);
+    
+        const newEvent = {
+            ...eventDetails,
+            id: newEventId,
+            eventDate: eventDetails.eventDate.toISOString()
+        };
+    
+        const newAttendees = attendees.map(attendee => ({
+            ...attendee,
+            id: String(Math.max(...data.attendees.map(a => parseInt(a.id, 10))) + 1),
+            eventId: newEventId,
+        }));
+    
+        setData(prevData => ({
+            ...prevData,
+            events: [...prevData.events, newEvent],
+            attendees: [...prevData.attendees, ...newAttendees],
+        }));
+    
+        setEventDetails({
+            id: "",
+            gameId: "",
+            name: "",
+            eventDate: new Date(),
+            duration: "",
+            description: "",
+        });
+
+        setAttendees([{ id: "", firstName: "", lastName: "" }]);
+    };
 
 	return (
 		<>
