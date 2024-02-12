@@ -1,23 +1,79 @@
-import React, { useContext } from "react";
+import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useData } from "../context/DataProvider"; // Assuming this is your context import
 
-const EventForm = ({eventDetails, handleChange, onEventChange}) => {
-    const { data } = useData(); // Correctly access data from context
+const EventForm = ({eventDetails, onEventChange}) => {
+    const { data } = useData();
+    const [hours, setHours] = useState("");
+    const [minutes, setMinutes] = useState("");
 
-    // Ensure there's a fallback for games and gameTypes if they're potentially undefined
     const games = data.games || [];
     const gameTypes = data.gameTypes || [];
+
+    const handleDurationFormat = (hh, mm) => {
+        const numHours = Number.parseInt(hh);
+        const numMinutes = Number.parseInt(mm);
+        let hours = "";
+        if(numHours > 0) {
+            hours += numHours + " hour";
+            if(numHours > 1) {
+                hours += "s";
+            }
+        }
+        let minutes = "";
+        if(numMinutes > 0) {
+            minutes += numMinutes + " minutes";
+        }
+        if(numHours === 0 && numMinutes === 0) {
+            return "None";
+        } else {
+            return hours + " " + minutes;
+        }
+    };
+
+    const handleDateChange = (date) => {
+        onEventChange({
+            ...eventDetails,
+            eventDate: date
+        })
+    }
+
+    const handleChange = (e) => {
+        if (e.target.name === 'hours' || e.target.name === 'minutes') {
+            const newHours = e.target.name === 'hours' ? e.target.value : hours;
+            const newMinutes = e.target.name === 'minutes' ? e.target.value : minutes;
+            
+            // Update the state with the new values
+            if (e.target.name === 'hours') {
+                setHours(newHours);
+            } else if (e.target.name === 'minutes') {
+                setMinutes(newMinutes);
+            }
+    
+            // Use the new values directly for calculating duration
+            const duration = handleDurationFormat(newHours, newMinutes);
+            onEventChange({
+                ...eventDetails,
+                'duration': duration
+            });
+        } else {
+            onEventChange({
+                ...eventDetails,
+                [e.target.name]: e.target.value
+            });
+        }
+    };
 
     return (
         <Form>
             <Form.Group>
                 <Form.Label>Select Game</Form.Label>
                 <Form.Select
+                    name="gameId"
                     value={eventDetails.gameId}
-                    onChange={(e) => handleChange("gameId", e.target.value)}
+                    onChange={handleChange}
                 >
                     <option value="">Select a game...</option>
                     {gameTypes.map((type) => (
@@ -39,16 +95,17 @@ const EventForm = ({eventDetails, handleChange, onEventChange}) => {
                 <Form.Control
                     type="text"
                     placeholder="Enter event name"
+                    name="name"
                     value={eventDetails.name || ''}
-                    onChange={(e) => handleChange("name", e.target.value)}
+                    onChange={handleChange}
                 />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formEventDate">
                 <Form.Label>Event Date</Form.Label>
                 <DatePicker
-                    selected={new Date(eventDetails.eventDate)}
-                    onChange={(date) => handleChange("eventDate", date)}
+                    selected={eventDetails.eventDate ? new Date(eventDetails.eventDate) : null}
+                    onChange={handleDateChange}
                     className="form-control"
                 />
             </Form.Group>
@@ -58,10 +115,9 @@ const EventForm = ({eventDetails, handleChange, onEventChange}) => {
                 <div className="d-flex">
                     <Form.Select
                         aria-label="Duration hours"
-                        value={eventDetails.durationHours}
-                        onChange={(e) =>
-                            handleChange("durationHours", e.target.value)
-                        }
+                        name="hours"
+                        value={hours}
+                        onChange={handleChange}
                         className="me-2"
                     >
                         {[...Array(24).keys()].map((hour) => (
@@ -72,10 +128,9 @@ const EventForm = ({eventDetails, handleChange, onEventChange}) => {
                     </Form.Select>
                     <Form.Select
                         aria-label="Duration minutes"
-                        value={eventDetails.durationMinutes}
-                        onChange={(e) =>
-                            handleChange("durationMinutes", e.target.value)
-                        }
+                        name="minutes"
+                        value={minutes}
+                        onChange={handleChange}
                     >
                         {["00", "15", "30", "45"].map((minute) => (
                             <option key={minute} value={minute}>
@@ -92,17 +147,11 @@ const EventForm = ({eventDetails, handleChange, onEventChange}) => {
                     as="textarea"
                     rows={3}
                     placeholder="Enter event description"
+                    name="description"
                     value={eventDetails.description}
-                    onChange={(e) =>
-                        handleChange("description", e.target.value)
-                    }
+                    onChange={handleChange}
                 />
             </Form.Group>
-
-            {/* This button is illustrative; the actual submission might be handled at a higher level */}
-            <Button variant="primary" type="button" onClick={() => handleChange('submit')}>
-                Submit
-            </Button>
         </Form>
     );
 };
