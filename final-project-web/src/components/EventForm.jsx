@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useData } from "../context/DataProvider"; // Assuming this is your context import
+import { useData } from "../context/DataProvider";
 
 const EventForm = ({eventDetails, onEventChange}) => {
     const { data } = useData();
