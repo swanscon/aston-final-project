@@ -28,10 +28,11 @@ public class EventService {
     private final WebClient.Builder webClientBuilder;
 
     //region CREATE
-    public void createEvent(EventRequest eventRequest) {
+    public EventResponse createEvent(EventRequest eventRequest) {
         Event event = eventHelper.mapToEvent(eventRequest);
-        eventRepository.save(event);
+        Event savedEvent = eventRepository.save(event);
         log.info("Event [" + event.getId() + "] saved successfully");
+        return eventHelper.mapToEventResponse(savedEvent);
     }
     //endregion
 

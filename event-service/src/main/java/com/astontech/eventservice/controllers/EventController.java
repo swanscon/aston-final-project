@@ -3,6 +3,7 @@ package com.astontech.eventservice.controllers;
 import com.astontech.eventservice.dto.EventAttendeeResponse;
 import com.astontech.eventservice.dto.EventRequest;
 import com.astontech.eventservice.dto.EventResponse;
+import com.astontech.eventservice.models.Event;
 import com.astontech.eventservice.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,9 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<String> createEvent(@RequestBody EventRequest eventRequest) {
-        eventService.createEvent(eventRequest);
-        return new ResponseEntity<>("Event created successfully.", HttpStatus.CREATED);
+    public ResponseEntity<EventResponse> createEvent(@RequestBody EventRequest eventRequest) {
+        EventResponse eventResponse = eventService.createEvent(eventRequest);
+        return new ResponseEntity<>(eventResponse, HttpStatus.CREATED);
     }
 
     @GetMapping

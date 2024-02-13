@@ -1,16 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useData } from "../context/DataProvider";
+// import { useData } from "../context/DataProvider";
 
 const EventForm = ({eventDetails, onEventChange}) => {
-    const { data } = useData();
+    // const { data } = useData();
     const [hours, setHours] = useState("");
     const [minutes, setMinutes] = useState("");
+    const [games, setGames] = useState([]);
+    const [gameTypes, setGameTypes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const games = data.games || [];
-    const gameTypes = data.gameTypes || [];
+
+    // const games = data.games || [];
+    // const gameTypes = data.gameTypes || [];
+
+    useEffect(() => {
+        setIsLoading(true);
+        console.log("Loading games");
+        fetch(
+            "http://localhost:8181/api/game"
+        )
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                const loadedGames = [];
+                for(const key in data) {
+                    const game = {
+                        id: key,
+                        ...data[key]
+                    };
+                    loadedGames.push(game);
+                }
+                setIsLoading(false);
+                setGames(loadedGames);
+            });
+        setIsLoading(true);
+        console.log("Loading game types");
+        fetch(
+            "http://localhost:8181/api/game/type"
+        )
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                const loadedGameTypes = [];
+                for(const key in data) {
+                    const gameType = {
+                        id: key,
+                        ...data[key]
+                    };
+                    loadedGameTypes.push(gameType);
+                }
+                setIsLoading(false);
+                setGameTypes(loadedGameTypes);
+            });
+    }, []);
 
     const handleDurationFormat = (hh, mm) => {
         const numHours = Number.parseInt(hh);
@@ -87,7 +134,7 @@ const EventForm = ({eventDetails, onEventChange}) => {
                     {gameTypes.map((type) => (
                         <optgroup label={type.name} key={type.id}>
                             {games
-                                .filter(game => game.gameTypeRequest.id === type.id)
+                                .filter(game => game.gameType.id === type.id)
                                 .map(game => (
                                     <option value={game.id} key={game.id}>
                                         {game.name}

@@ -5,7 +5,7 @@ export default function AttendeeForm({ attendees, onAttendeesChange }) {
 
 	const handleAddAttendee = () => {
 		if (attendees.length < 25) {
-			const newAttendees = [...attendees, { id: "", firstName: "", lastName: "" }];
+			const newAttendees = [...attendees, { firstName: "", lastName: "" }];
 			onAttendeesChange(newAttendees);
 		}
 	};
