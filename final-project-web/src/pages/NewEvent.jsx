@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import MainNav from "../components/MainNav";
 import EventForm from "../components/EventForm";
@@ -16,6 +17,17 @@ export default function NewEvent() {
 		description: "",
 	});
 	const [attendees, setAttendees] = useState([{ id: "", firstName: "", lastName: "", status: "Pending" }]);
+
+    const navigate = useNavigate();
+
+    const handleFormFilled = () => {
+        if( eventDetails.name.length > 0 &&
+            eventDetails.gameId.length > 0) {
+                handleSubmit();
+            } else {
+                alert("Event Name & Select Game fields required.");
+            }
+    }
 
 	const handleSubmit = () => {
         const newEventId = String(Math.max(...data.events.map(e => parseInt(e.id, 10))) + 1);
@@ -37,17 +49,9 @@ export default function NewEvent() {
             events: [...prevData.events, newEvent],
             attendees: [...prevData.attendees, ...newAttendees],
         }));
-    
-        setEventDetails({
-            id: "",
-            gameId: "",
-            name: "",
-            eventDate: new Date(),
-            duration: "",
-            description: "",
-        });
 
-        setAttendees([{ id: "", firstName: "", lastName: "" }]);
+        navigate("/events");
+    
     };
 
 	return (
@@ -58,7 +62,7 @@ export default function NewEvent() {
 				<EventForm eventDetails={eventDetails} onEventChange={setEventDetails} />
 				<AttendeeForm attendees={attendees} onAttendeesChange={setAttendees} />
 				<div>
-					<Button onClick={handleSubmit}>Submit</Button>
+					<Button onClick={handleFormFilled}>Submit</Button>
 				</div>
 			</div>
 		</>

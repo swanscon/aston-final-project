@@ -1,6 +1,6 @@
 export const mapDurationToHours = (duration) => {
     const sections = duration.split(" ");
-if(sections[0] < 10) {
+if(Number.parseInt(sections[0]) < 10) {
     sections[0] = "0" + sections[0];
 }
     return sections[0];

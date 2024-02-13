@@ -65,6 +65,17 @@ const EventForm = ({eventDetails, onEventChange}) => {
 
     return (
         <Form>
+            <Form.Group className="mb-3" controlId="formEventName">
+                <Form.Label>Event Name</Form.Label>
+                <Form.Control
+                    type="text"
+                    placeholder="Enter event name"
+                    name="name"
+                    value={eventDetails.name || ''}
+                    onChange={handleChange}
+                />
+            </Form.Group>
+
             <Form.Group>
                 <Form.Label>Select Game</Form.Label>
                 <Form.Select
@@ -85,17 +96,6 @@ const EventForm = ({eventDetails, onEventChange}) => {
                         </optgroup>
                     ))}
                 </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formEventName">
-                <Form.Label>Event Name</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Enter event name"
-                    name="name"
-                    value={eventDetails.name || ''}
-                    onChange={handleChange}
-                />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formEventDate">

@@ -24,23 +24,7 @@ public class SecurityConfig {
                     .pathMatchers("/eureka/**").permitAll()
                     .pathMatchers("/api/**").permitAll()
                     .anyExchange().authenticated()
-                )
-                .cors(corsSpec -> corsSpec.configurationSource(corsConfigurationSource()));
+                );
         return httpSecurity.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost:3000");
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        corsConfig.setAllowedHeaders(Collections.singletonList("*"));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-
-        return source;
     }
 }
