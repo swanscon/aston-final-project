@@ -28,6 +28,11 @@ public class GameController {
         return new ResponseEntity<>(gameService.getAllGames(), HttpStatus.OK);
     }
 
+    @GetMapping("/{gameId}")
+    public ResponseEntity<GameResponse> getGameById(@PathVariable Integer gameId) {
+        return new ResponseEntity<>(gameService.getGameById(gameId), HttpStatus.OK);
+    }
+
     @GetMapping("/type/{gameTypeName}")
     public ResponseEntity<List<GameResponse>> getGamesByGameType(@PathVariable String gameTypeName) {
         return new ResponseEntity<>(gameService.getAllGamesByGameTypeName(gameTypeName), HttpStatus.OK);

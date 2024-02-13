@@ -50,15 +50,10 @@ public class EventService {
         return eventResponseList;
     }
 
-    public Mono<EventAttendeeResponse> getEventById(Integer eventId) {
-        return Mono.just(eventRepository.findById(eventId)
-                .orElseThrow(() -> new EntityNotFoundException("Event not found.")))
-                .map(eventHelper::mapToEventAttendeeResponse)
-                .flatMap(response -> retrieveAttendeesForEvent(eventId)
-                        .map(attendees -> {
-                            response.setAttendees(attendees);
-                            return response;
-                        }));
+    public EventResponse getEventById(Integer eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Not event found with id: " + eventId));
+        return eventHelper.mapToEventResponse(event);
     }
 
     @CircuitBreaker(name = "attendees", fallbackMethod = "fallbackAttendees")
@@ -95,7 +90,7 @@ public class EventService {
     }
     //endregion
 
-    private Mono<List<AttendeeResponse>> fallbackAttendeesList(Integer eventId, Throwable t) {
+    private Mono<List<AttendeeResponse>> fallbackAttendees(Integer eventId, Throwable t) {
         log.error("Error retrieving attendees for event Id [" + eventId + "] : " + t.getMessage());
         return Mono.just(new ArrayList<>());
     }

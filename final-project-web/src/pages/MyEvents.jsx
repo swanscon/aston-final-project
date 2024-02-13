@@ -6,15 +6,38 @@ import { useData } from "../context/DataProvider";
 
 export default function MyEvents() {
 	const { data } = useData();
-	const [loadedEvents, setLoadedEvents] = useState([]);
+	const [events, setEvents] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		if (data.events) {
-			setLoadedEvents(data.events);
-			setIsLoading(false);
-		}
-	}, [data.events]);
+		setIsLoading(true);
+		console.log("Loading events");
+		fetch(
+			"http://localhost:8182/api/event"
+		)
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				const loadedEvents = [];
+				for(const key in data) {
+					const event = {
+						id: key,
+						...data[key]
+					};
+					loadedEvents.push(event);
+				}
+				setIsLoading(false);
+				setEvents(loadedEvents);
+			})
+	}, []);
+
+	// useEffect(() => {
+	// 	if (data.events) {
+	// 		setLoadedEvents(data.events);
+	// 		setIsLoading(false);
+	// 	}
+	// }, [data.events]);
 
 	function handleDateFormat(formattableDate) {
 		const date = new Date(formattableDate);
@@ -40,7 +63,7 @@ export default function MyEvents() {
 							<Button style={{ cursor: "pointer" }}>Create a New Event</Button>
 						</NavLink>
 						<ul style={{ listStyle: "none" }}>
-							{loadedEvents.map((event) => (
+							{events.map((event) => (
 								<NavLink
 									to={`/events/${event.id}`}
 									key={event.id}

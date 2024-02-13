@@ -38,6 +38,12 @@ public class GameService {
         return getGameResponses(gameList);
     }
 
+    public GameResponse getGameById(Integer id) {
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No game found with id: " + id));
+        return mapToGameResponse(game);
+    }
+
     public List<GameResponse> getAllGamesByGameTypeName(String gameTypeName) {
         GameType gameType = gameTypeRepository.findByName(gameTypeName);
         List<Game> filteredGameList = gameRepository.findByGameType(gameType);

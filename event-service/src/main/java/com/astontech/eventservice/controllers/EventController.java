@@ -31,10 +31,8 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<EventAttendeeResponse>> getEventById(@PathVariable Integer id) {
-        return eventService.getEventById(id)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    public ResponseEntity<EventResponse> getEventById(@PathVariable Integer id) {
+        return new ResponseEntity<>(eventService.getEventById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
