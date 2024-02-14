@@ -1,3 +1,4 @@
+import MainFooter from "../components/MainFooter";
 import MainNav from "../components/MainNav";
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
 			<div style={{ border: "solid blue 2px" }}>
 				<h1>Home Page!</h1>
 			</div>
+			<MainFooter />
 		</>
 	);
 }

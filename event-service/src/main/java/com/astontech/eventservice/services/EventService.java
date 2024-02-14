@@ -53,7 +53,7 @@ public class EventService {
 
     public EventResponse getEventById(Integer eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new EntityNotFoundException("Not event found with id: " + eventId));
+                .orElseThrow(() -> new EntityNotFoundException("No event found with id: " + eventId));
         return eventHelper.mapToEventResponse(event);
     }
 

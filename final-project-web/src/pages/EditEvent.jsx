@@ -1,113 +1,210 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MainNav from "../components/MainNav";
 import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { useData } from "../context/DataProvider";
 import EditForm from "../components/EditForm";
+import MainFooter from "../components/MainFooter";
 
 export default function EditEvent() {
-	const { id } = useParams();
-	const { data, setData } = useData();
-	const event = data.events.find((e) => e.id === id);
-	const [eventDetails, setEventDetails] = useState({
-		id: event.id,
-		gameId: event.gameId,
-		name: event.name,
-		eventDate: event.eventDate,
-		duration: event.duration,
-		description: event.description,
-	});
-	const [attendees, setAttendees] = useState(
-		data.attendees.filter((attendee) => attendee.eventId === id)
-	);
+    let { id } = useParams();
+    const [isLoading, setIsLoading] = useState(true);
+    const [eventDetails, setEventDetails] = useState({
+        id: "",
+        gameId: "",
+        name: "",
+        eventDate: "",
+        duration: "",
+        description: "",
+    });
+    const [attendees, setAttendees] = useState([]);
+    const [delAttendees, setDelAttendees] = useState([]);
 
-    const prevEvent = eventDetails;
-    const prevAttendees = attendees;
+    useEffect(() => {
+        setIsLoading(true);
 
-	const navigate = useNavigate();
+        const fetchEvent = fetch(`http://localhost:8182/api/event/${id}`).then(
+            (response) => {
+                if (!response.ok)
+                    throw new Error("Event could not be fetched!");
+                return response.json();
+            }
+        );
 
-	const onEventChange = (updatedDetails) => {
-		setEventDetails(updatedDetails);
-	};
+        fetchEvent
+            .then((eventData) => {
+                return fetch(`http://localhost:8183/api/attendee/event/${id}`)
+                    .then((response) => response.json())
+                    .then((attendeesData) => {
+                        const loadedAttendees = Object.keys(attendeesData).map(
+                            (key) => ({
+                                id: key,
+                                ...attendeesData[key],
+                            })
+                        );
+                        setAttendees(loadedAttendees);
+                        return eventData;
+                    });
+            })
+            .then((eventData) => {
+                setEventDetails(eventData);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setIsLoading(false);
+            });
+    }, [id]);
 
-	const onAttendeesChange = (updatedAttendees) => {
-		setAttendees(updatedAttendees);
-	};
+    const navigate = useNavigate();
 
-    const handleChangesMade = () => {
-        if( eventDetails.name === prevEvent.name &&
-            eventDetails.gameId === prevEvent.gameId &&
-            eventDetails.duration === prevEvent.duration &&
-            eventDetails.description === prevEvent.description &&
-            prevAttendees === attendees) {
-                alert("No changes detected. Please make a change or return to Event page");
-        } else {
-            handleSubmit();
+    const onEventChange = (updatedDetails) => {
+        setEventDetails(updatedDetails);
+    };
+
+    const onAttendeesDel = (idToRemove) => {
+        setDelAttendees((prevDelAttendees) => [
+            ...prevDelAttendees,
+            idToRemove,
+        ]);
+    };
+
+    const onAttendeesChange = (updatedAttendees) => {
+        setAttendees(updatedAttendees);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            // Update event
+            const eventResponse = await fetch(
+                `http://localhost:8182/api/event/${eventDetails.id}`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify(eventDetails),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (!eventResponse.ok) {
+                throw new Error("Failed to update the event");
+            }
+            // eslint-disable-next-line
+            const eventData = eventResponse; // For Logging
+
+            // Update (or Add) attendees
+            for (const attendee of attendees) {
+                if (
+                    attendee.id < 0 &&
+                    (attendee.firstName.length !== 0 ||
+                        attendee.lastName.length !== 0)
+                ) {
+                    const attendeeResponse = await fetch(
+                        "http://localhost:8183/api/attendee",
+                        {
+                            method: "POST",
+                            body: JSON.stringify(attendee),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    if (!attendeeResponse.ok) {
+                        throw new Error("Failed to add new attendee");
+                    }
+                    // eslint-disable-next-line
+                    const attendeeData = attendeeResponse; // For Logging
+                } else {
+                    const attendeeResponse = await fetch(
+                        `http://localhost:8183/api/attendee/${attendee.id}`,
+                        {
+                            method: "PUT",
+                            body: JSON.stringify(attendee),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    if (!attendeeResponse.ok) {
+                        throw new Error("Failed to update the attendee");
+                    }
+                    // eslint-disable-next-line
+                    const attendeeData = attendeeResponse; // For Logging
+
+                    // Update status
+                    const statusResponse = await fetch(
+                        `http://localhost:8183/api/attendee/${attendee.id}/${attendee.status}`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    if (!statusResponse.ok) {
+                        throw new Error("Failed to update attendee status");
+                    }
+                    // eslint-disable-next-line
+                    const statusData = statusResponse; // For Logging
+                }
+            }
+            // Delete attendees
+            for (const delId of delAttendees) {
+                if (delId > 0) {
+                    const deleteResponse = await fetch(
+                        `http://localhost:8183/api/attendee/${delId}`,
+                        {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
+                    if (!deleteResponse.ok) {
+                        throw new Error("Failed to delete the attendee");
+                    }
+                    // eslint-disable-next-line
+                    const deleteData = deleteResponse; // For Logging
+                }
+            }
+        } catch (error) {
+            console.error("Failed to update event and attendees", error);
         }
-    }
+        navigate(`/events/${id}`);
+    };
 
-	const handleSubmit = () => {
-		const updatedEvent = {
-			...eventDetails,
-			eventDate: eventDetails.eventDate.toISOString(),
-		};
-
-		const updatedAttendees = attendees.map((attendee) => {
-			if (attendee.id) {
-				return attendee;
-			} else {
-				return {
-					...attendee,
-					id: String(Math.max(...data.attendees.map((a) => parseInt(a.id, 10))) + 1),
-					eventId: id,
-				};
-			}
-		});
-
-		// Update Context API
-		setData((prevData) => {
-			const eventsUpdated = prevData.events.map((e) =>
-				e.id === id ? updatedEvent : e
-			);
-			const attendeesUpdated = [
-				...prevData.attendees.filter(
-					(attendee) =>
-						attendee.eventId !== id || attendees.map((a) => a.id).includes(attendee.id)
-				),
-				...updatedAttendees.filter(
-					(attendee) => !attendee.id || attendees.map((a) => a.id).includes(attendee.id)
-				),
-			];
-
-			return {
-				...prevData,
-				events: eventsUpdated,
-				attendees: attendeesUpdated,
-			};
-		});
-		navigate(`/events/${id}`);
-	};
-
-	return (
-		<>
-			<MainNav />
-			<div className="container mt-4">
-				<h2>Editing: {event?.name}</h2>
-				<EditForm
-					eventDetails={eventDetails}
-					onEventChange={onEventChange}
-					attendees={attendees}
-					onAttendeesChange={onAttendeesChange}
-				/>
-				<Button type="submit" onClick={handleChangesMade}>
-					Save All
-				</Button>
-				<div>
-					<NavLink to={`/events/${id}`} className="btn btn-secondary mt-3">
-						Back
-					</NavLink>
-				</div>
-			</div>
-		</>
-	);
+    return (
+        <>
+            <MainNav />
+            {isLoading ? (
+                <>
+                    <h1>My Events</h1>
+                    <p>Loading data...</p>
+                </>
+            ) : (
+                <div className="container mt-4">
+                    <h2>Editing: {eventDetails.name}</h2>
+                    <EditForm
+                        eventDetails={eventDetails}
+                        onEventChange={onEventChange}
+                        attendees={attendees}
+                        onAttendeesChange={onAttendeesChange}
+                        delAttendees={delAttendees}
+                        onAttendeesDel={onAttendeesDel}
+                    />
+                    <Button type="submit" onClick={handleSubmit}>
+                        Save All
+                    </Button>
+                    <div>
+                        <NavLink
+                            to={`/events/${id}`}
+                            className="btn btn-secondary mt-3"
+                        >
+                            Back
+                        </NavLink>
+                    </div>
+                </div>
+            )}
+            <MainFooter />
+        </>
+    );
 }
