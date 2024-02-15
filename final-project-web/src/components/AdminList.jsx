@@ -20,7 +20,7 @@ export default function AdminList() {
                     <b>Event Service</b>
                     <ListGroup>
                         <ListGroup.Item>
-                            <NavLink to="#">Event</NavLink>
+                            <NavLink to="/admin/event">Event</NavLink>
                         </ListGroup.Item>
                     </ListGroup>
                 </ListGroup.Item>
@@ -28,7 +28,7 @@ export default function AdminList() {
                     <b>Attendee Service</b>
                     <ListGroup>
                         <ListGroup.Item>
-                            <NavLink to="#">Attendee</NavLink>
+                            <NavLink to="/admin/attendee">Attendee</NavLink>
                         </ListGroup.Item>
                     </ListGroup>
                 </ListGroup.Item>

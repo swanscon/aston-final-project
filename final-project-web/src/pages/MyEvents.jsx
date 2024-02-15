@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import MainNav from "../components/MainNav";
 import { useEffect, useState } from "react";
 import MainFooter from "../components/MainFooter";
+import { handleDateFormat } from "../utils/HandleDateFormat";
 
 export default function MyEvents() {
     const [events, setEvents] = useState([]);
@@ -27,14 +28,6 @@ export default function MyEvents() {
                 setEvents(loadedEvents);
             });
     }, []);
-
-    function handleDateFormat(formattableDate) {
-        const date = new Date(formattableDate);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        return month + "-" + day + "-" + year;
-    }
 
     return (
         <>

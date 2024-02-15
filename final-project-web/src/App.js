@@ -10,6 +10,8 @@ import EditEvent from "./pages/EditEvent";
 import AdminGame from "./pages/AdminGame";
 import AdminList from "./components/AdminList";
 import AdminGameType from "./pages/AdminGameType";
+import AdminEvent from "./pages/AdminEvent";
+import AdminAttendee from "./pages/AdminAttendee";
 
 function App() {
 	return (
@@ -25,6 +27,8 @@ function App() {
 					<Route index element={<AdminList />} />
 					<Route path="game" element={<AdminGame />} />
 					<Route path="gameType" element={<AdminGameType />} />
+					<Route path="event" element={<AdminEvent />} />
+					<Route path="attendee" element={<AdminAttendee />} />
 				</Route>
 			</Routes>
 		</div>

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import AdminSearch from "../components/AdminSearch";
 import GameTypeTable from "../components/GameTypeTable";
 import { sortByName } from "../utils/SortByName";
+import { Button } from "react-bootstrap";
 
 export default function AdminGame() {
 	const [gameTypes, setGameTypes] = useState([]);
@@ -34,7 +35,11 @@ export default function AdminGame() {
 		<>
 			<h2>Game Type management</h2>
 			{/* CRUD Links here */}
-
+			<div>
+				<NavLink to="#">
+					<Button>Create a New Game</Button>
+				</NavLink>
+			</div>
 			<NavLink to="/admin">Back</NavLink>
 			<AdminSearch onSearch={setSearchText} />
 			<GameTypeTable gameTypes={gameTypes} />

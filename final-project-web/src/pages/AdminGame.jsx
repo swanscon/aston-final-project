@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminSearch from "../components/AdminSearch";
 import GameTable from "../components/GameTable";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 export default function AdminGame() {
 	const [games, setGames] = useState([]);
@@ -43,7 +43,11 @@ export default function AdminGame() {
 		<>
 			<h2>Game Management</h2>
 			{/* CRUD Links here */}
-
+			<div>
+				<NavLink to="#">
+					<Button>Create a New Game</Button>
+				</NavLink>
+			</div>
 			<NavLink to="/admin">Back</NavLink>
 			<AdminSearch onSearch={setSearchText} />
 			<div>
