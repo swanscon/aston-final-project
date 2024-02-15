@@ -8,9 +8,7 @@ export default function MainFooter() {
                 <Nav>
                     <NavLink to="/">TABLFG</NavLink>
 
-                    <NavLink to="/events">My Events</NavLink>
-
-                    <NavLink to="/games">Browse Games</NavLink>
+                    <NavLink to="/admin">Admin</NavLink>
                 </Nav>
             </Navbar>
         </div>

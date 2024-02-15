@@ -1,14 +1,14 @@
 export const sortByName = (arrayOfObjects) => {
-    arrayOfObjects.sort((a, b) => {
-        let nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    return arrayOfObjects.slice().sort((a, b) => {
+        let nameA = a.name.toUpperCase();
+        let nameB = b.name.toUpperCase();
+
         if (nameA < nameB) {
-            return -1; //nameA comes first
+            return -1;
         }
         if (nameA > nameB) {
-            return 1; // nameB comes first
+            return 1;
         }
-        return 0;  // names must be equal
+        return 0;
     });
-    return arrayOfObjects;
 }

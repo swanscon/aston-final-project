@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { sortByName } from "../utils/SortByName";
+import { sortByField } from "../utils/SortByField";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,7 +26,7 @@ const EventForm = ({ eventDetails, onEventChange }) => {
                     };
                     loadedGames.push(game);
                 }
-                sortByName(loadedGames);
+                sortByField(loadedGames, 'name');
                 setIsLoading(false);
                 setGames(loadedGames);
             });
@@ -44,7 +44,7 @@ const EventForm = ({ eventDetails, onEventChange }) => {
                     };
                     loadedGameTypes.push(gameType);
                 }
-                sortByName(loadedGameTypes);
+                sortByField(loadedGameTypes, 'name');
                 setIsLoading(false);
                 setGameTypes(loadedGameTypes);
             });

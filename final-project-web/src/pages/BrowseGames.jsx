@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MainNav from "../components/MainNav";
-import { sortByName } from "../utils/SortByName";
+import { sortByField } from "../utils/SortByField";
 import MainFooter from "../components/MainFooter";
 
 export default function BrowseGames() {
@@ -23,7 +23,7 @@ export default function BrowseGames() {
                     };
                     loadedGames.push(game);
                 }
-                sortByName(loadedGames);
+                sortByField(loadedGames, 'name');
                 setIsLoading(false);
                 setGames(loadedGames);
             });
@@ -41,7 +41,7 @@ export default function BrowseGames() {
                     };
                     loadedGameTypes.push(gameType);
                 }
-                sortByName(loadedGameTypes);
+                sortByField(loadedGameTypes, 'name');
                 setIsLoading(false);
                 setGameTypes(loadedGameTypes);
             });
