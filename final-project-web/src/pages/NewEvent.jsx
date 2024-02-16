@@ -12,7 +12,8 @@ export default function NewEvent() {
         gameId: "",
         name: "",
         eventDate: new Date(),
-        duration: "",
+        startTime: "00:00:00",
+        endTime: "00:00:00",
         description: "",
     });
     const [attendees, setAttendees] = useState([

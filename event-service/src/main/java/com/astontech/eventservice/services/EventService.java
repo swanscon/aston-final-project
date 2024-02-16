@@ -75,7 +75,8 @@ public class EventService {
         eventToUpdate.setGameId(eventRequest.getGameId());
         eventToUpdate.setName(eventRequest.getName());
         eventToUpdate.setEventDate(eventRequest.getEventDate());
-        eventToUpdate.setDuration(eventRequest.getDuration());
+        eventToUpdate.setStartTime(eventRequest.getStartTime());
+        eventToUpdate.setEndTime(eventRequest.getEndTime());
         eventToUpdate.setDescription(eventRequest.getDescription());
         eventRepository.save(eventToUpdate);
         log.info("Event [" + eventToUpdate.getId() + "] updated successfully");

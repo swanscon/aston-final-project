@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
+import java.time.LocalTime;
+
 
 @Entity
 @Table(name = "event")
@@ -19,6 +20,7 @@ public class Event {
     private Integer gameId;
     private String name;
     private Date eventDate;
-    private String duration;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String description;
 }

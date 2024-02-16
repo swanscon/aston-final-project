@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import MainNav from "../components/MainNav";
 import { useState, useEffect } from "react";
 import MainFooter from "../components/MainFooter";
+import { formatAmPm } from "../utils/HandleTimeFormat";
 
 export default function ViewEvent() {
     let { id } = useParams();
@@ -145,7 +146,8 @@ export default function ViewEvent() {
                                 {new Date(event.eventDate).toLocaleDateString()}
                             </Card.Subtitle>
                             <Card.Text>{event.description}</Card.Text>
-                            <Card.Text>Duration: {event.duration}</Card.Text>
+                            <Card.Text>Start Time: {formatAmPm(event.startTime)}</Card.Text>
+                            <Card.Text>End Time: {formatAmPm(event.endTime)}</Card.Text>
                         </Card.Body>
                         <ListGroup variant="flush">
                             <ListGroup.Item>

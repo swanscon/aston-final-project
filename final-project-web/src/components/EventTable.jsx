@@ -56,7 +56,8 @@ export default function EventTable({ events, sortParam }) {
 						<th>Event Name</th>
 						<th>Game</th>
 						<th>Date</th>
-						<th>Duration</th>
+						<th>Start Time</th>
+						<th>End Time</th>
                         <th>Attendees</th>
 						<th>Links</th>
 					</tr>
@@ -67,7 +68,8 @@ export default function EventTable({ events, sortParam }) {
 							<td>{event.name}</td>
 							<td>{handleGameNameFromId(event.gameId)}</td>
 							<td>{handleDateFormat(event.eventDate)}</td>
-							<td>{event.duration}</td>
+							<td>{event.startTime}</td>
+							<td>{event.endTime}</td>
                             <td>{event.attendeeCount}</td>
 							<td>
 								<NavLink to="#" style={{ textDecoration: "none" }}>

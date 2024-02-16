@@ -16,15 +16,19 @@ public class EventHelper {
                 .gameId(eventRequest.getGameId())
                 .name(eventRequest.getName())
                 .eventDate(eventRequest.getEventDate())
-                .duration(eventRequest.getDuration())
+                .startTime(eventRequest.getStartTime())
+                .endTime(eventRequest.getEndTime())
                 .description(eventRequest.getDescription())
                 .build();
     }
 
     public String eventToString(Event event) {
-        return "ID [" + event.getId() + "] - NAME [" + event.getName() + "] - DATE ["
-                + event.getEventDate() + "] - DURATION [" + event.getDuration() + "] --- ["
-                + event.getDescription() + "]";
+        return "ID [" + event.getId()
+                + "] - NAME [" + event.getName()
+                + "] - DATE [" + event.getEventDate()
+                + "] - START TIME [" + event.getStartTime()
+                + "] - END TIME [" + event.getEndTime()
+                + "] --- [" + event.getDescription() + "]";
     }
 
     public EventResponse mapToEventResponse(Event event) {
@@ -33,7 +37,8 @@ public class EventHelper {
                 .gameId(event.getGameId())
                 .name(event.getName())
                 .eventDate(event.getEventDate())
-                .duration(event.getDuration())
+                .startTime(event.getStartTime())
+                .endTime(event.getEndTime())
                 .description(event.getDescription())
                 .build();
     }
@@ -44,7 +49,8 @@ public class EventHelper {
                 .gameId(event.getGameId())
                 .name(event.getName())
                 .eventDate(event.getEventDate())
-                .duration(event.getDuration())
+                .startTime(event.getStartTime())
+                .endTime(event.getEndTime())
                 .description(event.getDescription())
                 .build();
     }

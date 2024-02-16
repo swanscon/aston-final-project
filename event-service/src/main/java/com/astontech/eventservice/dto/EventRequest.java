@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class EventRequest {
     private Integer gameId;
     private String name;
     private Date eventDate;
-    private String duration;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String description;
 }
