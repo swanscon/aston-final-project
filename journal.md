@@ -14,3 +14,6 @@ module pom.xml files.
   
 ## 2/12/24
 - **Remote Upstream** - Set up on Dell PC for origin/master branch
+
+## 2/16/24
+- **Git Commit** - intelliJ reset
