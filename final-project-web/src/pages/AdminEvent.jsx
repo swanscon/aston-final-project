@@ -8,6 +8,7 @@ export default function AdminEvent() {
 	const [events, setEvents] = useState([]);
 	const [searchText, setSearchText] = useState("");
 	const [sortParam, setSortParam] = useState("name");
+	const [sortAsc, setSortAsc] = useState(true);
 
 	useEffect(() => {
 		const fetchEventsAndAttendeeCounts = async () => {
@@ -56,6 +57,10 @@ export default function AdminEvent() {
 		setSortParam(e.target.value);
 	};
 
+	const handleSortOrderChange = (e) => {
+		setSortAsc(e.target.id === "asc");
+	};
+
 	return (
 		<>
 			<h2>Event Management</h2>
@@ -69,46 +74,41 @@ export default function AdminEvent() {
 			<AdminSearch onSearch={setSearchText} />
 			<div>
 				<Form>
-					<Form.Label>Sort By: </Form.Label>
-					<Form.Check
-						inline
-						type="radio"
-						label="Name"
-						name="sortOptions"
-						value="name"
-						checked={sortParam === "name"}
-						onChange={handleSortBy}
-					/>
-					{/* <Form.Check
-						inline
-						type="radio"
-						label="Game"
-						name="sortOptions"
-						value="gameId"
-						checked={sortParam === "gameId"}
-						onChange={handleSortBy}
-					/> */}
-					<Form.Check
-						inline
-						type="radio"
-						label="Date"
-						name="sortOptions"
-						value="eventDate"
-						checked={sortParam === "eventDate"}
-						onChange={handleSortBy}
-					/>
-					<Form.Check
-						inline
-						type="radio"
-						label="Attendees"
-						name="sortOptions"
-						value="attendeeCount"
-						checked={sortParam === "attendeeCount"}
-						onChange={handleSortBy}
-					/>
+					<Form.Group controlId="sortBySelect">
+						<Form.Label>Sort By: </Form.Label>
+						<Form.Select aria-label="Sort by" onChange={handleSortBy} value={sortParam}>
+							<option value="name">Event</option>
+							<option value="gameId">Game</option>
+							<option value="eventDate">Date</option>
+							<option value="attendeeCount">Attendees (qty)</option>
+						</Form.Select>
+					</Form.Group>
+					<fieldset>
+						<Form.Group>
+							<Form.Label>Order: </Form.Label>
+							<Form.Check
+								inline
+								type="radio"
+								label="Asc"
+								name="sortOrderOptions"
+								id="asc"
+								checked={sortAsc}
+								onChange={handleSortOrderChange}
+							/>
+							<Form.Check
+								inline
+								type="radio"
+								label="Desc"
+								name="sortOrderOptions"
+								id="desc"
+								checked={!sortAsc}
+								onChange={handleSortOrderChange}
+							/>
+						</Form.Group>
+					</fieldset>
 				</Form>
 			</div>
-			<EventTable events={events} sortParam={sortParam} />
+			<EventTable events={events} sortParam={sortParam} sortAsc={sortAsc} />
 		</>
 	);
 }

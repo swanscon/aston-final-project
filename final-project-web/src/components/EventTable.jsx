@@ -4,12 +4,32 @@ import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 import { handleDateFormat } from "../utils/HandleDateFormat";
 
-export default function EventTable({ events, sortParam }) {
+export default function EventTable({ events, sortParam, sortAsc }) {
 	const [pageNum, setPageNum] = useState(1);
-    const [games, setGames] = useState([]);
+	const [games, setGames] = useState([]);
 	const eventsPerPage = 25;
 
-	const sortedEvents = sortByField(events, sortParam);
+	const handleGameNameFromId = (gameId) => {
+		const game = games.find((game) => game.id === gameId);
+		return game ? game.name : "n/a";
+	};
+
+	const sortEventsByGameName = (events, sortAsc) => {
+		return [...events].sort((a, b) => {
+			const gameNameA = handleGameNameFromId(a.gameId);
+			const gameNameB = handleGameNameFromId(b.gameId);
+			if (sortAsc) {
+				return gameNameA.localeCompare(gameNameB);
+			} else {
+				return gameNameB.localeCompare(gameNameA);
+			}
+		});
+	};
+
+	const sortedEvents =
+		sortParam !== "gameId"
+			? sortByField(events, sortParam, sortAsc)
+			: sortEventsByGameName(events, sortAsc);
 
 	const indexOfLastEvent = pageNum * eventsPerPage;
 	const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
@@ -30,23 +50,19 @@ export default function EventTable({ events, sortParam }) {
 		);
 	}
 
-    useEffect(() => {
-        fetch("http://localhost:8181/api/game")
-            .then(response => response.json())
-            .then(data => {
-                const loadedGames = Object.keys(data).map(key => ({
-                    id: key,
-                    ...data[key],
-                }));
-                setGames(loadedGames);
-            })
-            .catch(error => console.log(error));
-    }, []);
+	useEffect(() => {
+		fetch("http://localhost:8181/api/game")
+			.then((response) => response.json())
+			.then((data) => {
+				const loadedGames = Object.keys(data).map((key) => ({
+					id: key,
+					...data[key],
+				}));
 
-    const handleGameNameFromId = (gameId) => {
-        const game = games.find(game => game.id === gameId);
-        return game ? game.name : "n/a";
-    };
+				setGames(loadedGames);
+			})
+			.catch((error) => console.log(error));
+	}, []);
 
 	return (
 		<>
@@ -58,7 +74,7 @@ export default function EventTable({ events, sortParam }) {
 						<th>Date</th>
 						<th>Start Time</th>
 						<th>End Time</th>
-                        <th>Attendees</th>
+						<th>Attendees</th>
 						<th>Links</th>
 					</tr>
 				</thead>
@@ -70,7 +86,7 @@ export default function EventTable({ events, sortParam }) {
 							<td>{handleDateFormat(event.eventDate)}</td>
 							<td>{event.startTime}</td>
 							<td>{event.endTime}</td>
-                            <td>{event.attendeeCount}</td>
+							<td>{event.attendeeCount}</td>
 							<td>
 								<NavLink to="#" style={{ textDecoration: "none" }}>
 									View{" "}

@@ -1,4 +1,4 @@
-export const sortByField = (arrayOfObjects, field) => {
+export const sortByField = (arrayOfObjects, field, asc) => {
     arrayOfObjects.sort((a, b) => {
         const getField = (obj, path) => {
             const keys = path.split('.');
@@ -15,11 +15,20 @@ export const sortByField = (arrayOfObjects, field) => {
         let fieldA = getField(a, field) ? getField(a, field).toString().toUpperCase() : '';
         let fieldB = getField(b, field) ? getField(b, field).toString().toUpperCase() : '';
 
-        if (fieldA < fieldB) {
-            return -1;
-        }
-        if (fieldA > fieldB) {
-            return 1;
+        if(asc) {
+            if (fieldA < fieldB) {
+                return -1;
+            }
+            if (fieldA > fieldB) {
+                return 1;
+            }
+        } else {
+            if (fieldA > fieldB) {
+                return -1;
+            }
+            if (fieldA < fieldB) {
+                return 1;
+            }
         }
         return 0;
     });

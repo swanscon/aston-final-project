@@ -3,11 +3,11 @@ import { Table, Pagination } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 
-export default function GameTable({ games, sortParam }) {
+export default function GameTable({ games, sortParam, sortAsc }) {
 	const [pageNum, setPageNum] = useState(1);
 	const gamesPerPage = 25;
 
-    const sortedGames = sortByField(games, sortParam);
+    const sortedGames = sortByField(games, sortParam, sortAsc);
 
 	const indexOfLastGame = pageNum * gamesPerPage;
 	const indexOfFirstGame = indexOfLastGame - gamesPerPage;
@@ -33,8 +33,8 @@ export default function GameTable({ games, sortParam }) {
 			<Table striped bordered hover>
 				<thead>
 					<tr>
-						<th>Game Name</th>
-                        <th>Type</th>
+						<th>Name</th>
+                        <th>Game Type</th>
 						<th>Image File</th>
 						<th>Description</th>
                         <th>Links</th>
