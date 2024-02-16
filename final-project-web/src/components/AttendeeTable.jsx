@@ -3,7 +3,7 @@ import { Table, Pagination } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 
-export default function AttendeeTable({ attendees, sortParam, sortAsc }) {
+export default function AttendeeTable({ attendees, sortParam, sortAsc, setRefresh }) {
 	const [pageNum, setPageNum] = useState(1);
 	const [events, setEvents] = useState([]);
 	const attendeesPerPage = 25;
@@ -17,7 +17,7 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc }) {
 		return [...attendees].sort((a, b) => {
 			const eventNameA = handleEventNameFromId(a.eventId);
 			const eventNameB = handleEventNameFromId(b.eventId);
-			if(sortAsc) {
+			if (sortAsc) {
 				return eventNameA.localeCompare(eventNameB);
 			} else {
 				return eventNameB.localeCompare(eventNameA);
@@ -63,6 +63,23 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc }) {
 			.catch((error) => console.log(error));
 	}, []);
 
+	const handleDelete = async (attendeeId) => {
+		try {
+			const deleteReponse = await fetch(`http://localhost:8183/api/attendee/${attendeeId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (!deleteReponse.ok) {
+				throw new Error("Failed to delete attendee");
+			}
+			setRefresh(prevState => !prevState);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<Table striped bordered hover>
@@ -71,6 +88,7 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc }) {
 						<th>Event</th>
 						<th>First</th>
 						<th>Last</th>
+						<th>Status</th>
 						<th>Links</th>
 					</tr>
 				</thead>
@@ -80,16 +98,25 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc }) {
 							<td>{handleEventNameFromId(attendee.eventId)}</td>
 							<td>{attendee.firstName}</td>
 							<td>{attendee.lastName}</td>
+							<td>{attendee.status}</td>
 							<td>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
-									View{" "}
-								</NavLink>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
+								<NavLink
+									to={`/admin/attendee/${attendee.id}`}
+									style={{ textDecoration: "none" }}
+								>
 									Edit{" "}
 								</NavLink>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
+								<p
+									to="#"
+									style={{
+										textDecoration: "none",
+										cursor: "pointer",
+										color: "blue",
+									}}
+									onClick={() => handleDelete(attendee.id)}
+								>
 									Delete
-								</NavLink>
+								</p>
 							</td>
 						</tr>
 					))}

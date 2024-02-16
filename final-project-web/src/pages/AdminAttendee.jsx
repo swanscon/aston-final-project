@@ -9,33 +9,39 @@ export default function AdminAttendee() {
 	const [searchText, setSearchText] = useState("");
 	const [sortParam, setSortParam] = useState("eventId");
 	const [sortAsc, setSortAsc] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 
 	useEffect(() => {
-		fetch("http://localhost:8183/api/attendee")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Failed to fetch attendees");
-				}
-				return response.json();
-			})
-			.then((data) => {
-				const loadedAttendees = Object.keys(data)
-					.map((key) => ({
-						id: key,
-						...data[key],
-					}))
-					.filter(
-						(attendee) =>
-							searchText === "" ||
-							attendee.firstName.toUpperCase().includes(searchText.toUpperCase()) ||
-							attendee.lastName.toUpperCase().includes(searchText.toUpperCase())
-					);
-				setAttendees(loadedAttendees);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, [searchText]);
+			fetch("http://localhost:8183/api/attendee")
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error("Failed to fetch attendees");
+					}
+					return response.json();
+				})
+				.then((data) => {
+					const loadedAttendees = Object.keys(data)
+						.map((key) => ({
+							id: key,
+							...data[key],
+						}))
+						.filter(
+							(attendee) =>
+								searchText === "" ||
+								attendee.firstName
+									.toUpperCase()
+									.includes(searchText.toUpperCase()) ||
+								attendee.lastName.toUpperCase().includes(searchText.toUpperCase())
+						);
+					setAttendees(loadedAttendees);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+			if (refresh) {
+				setRefresh(false);
+			}
+	}, [searchText, refresh]);
 
 	const handleSortBy = (e) => {
 		setSortParam(e.target.value);
@@ -91,7 +97,12 @@ export default function AdminAttendee() {
 					</fieldset>
 				</Form>
 			</div>
-			<AttendeeTable attendees={attendees} sortParam={sortParam} sortAsc={sortAsc} />
+			<AttendeeTable
+				attendees={attendees}
+				sortParam={sortParam}
+				sortAsc={sortAsc}
+				setRefresh={setRefresh}
+			/>
 		</>
 	);
 }
