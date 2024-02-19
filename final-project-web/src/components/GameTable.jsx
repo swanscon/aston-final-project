@@ -45,10 +45,9 @@ export default function GameTable({ games, sortParam, sortAsc }) {
 						<tr key={game.id || index}>
 							<td>{game.name}</td>
                             <td>{game.gameType.name}</td>
-							<td>{game.image}</td>
+							<td><NavLink to="#" target="_blank">{game.image}</NavLink></td>
 							<td>{game.description}</td>
                             <td>
-                                <NavLink to="#" style={{textDecoration: 'none'}}>View </NavLink>
                                 <NavLink to="#" style={{textDecoration: 'none'}}>Edit </NavLink>
                                 <NavLink to="#" style={{textDecoration: 'none'}}>Delete</NavLink>
                             </td>

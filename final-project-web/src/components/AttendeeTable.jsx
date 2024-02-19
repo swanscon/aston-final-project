@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 
 export default function AttendeeTable({ attendees, sortParam, sortAsc, setRefresh }) {
 	const [pageNum, setPageNum] = useState(1);
 	const [events, setEvents] = useState([]);
+	const [deleting, setDeleting] = useState(null);
 	const attendeesPerPage = 25;
 
 	const handleEventNameFromId = (eventId) => {
@@ -63,6 +64,10 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc, setRefres
 			.catch((error) => console.log(error));
 	}, []);
 
+	const handleToggleDeleting = (id) => {
+		setDeleting(deleting === id ? null : id);
+	};
+
 	const handleDelete = async (attendeeId) => {
 		try {
 			const deleteReponse = await fetch(`http://localhost:8183/api/attendee/${attendeeId}`, {
@@ -74,7 +79,8 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc, setRefres
 			if (!deleteReponse.ok) {
 				throw new Error("Failed to delete attendee");
 			}
-			setRefresh(prevState => !prevState);
+			setDeleting(null);
+			setRefresh((prevState) => !prevState);
 		} catch (error) {
 			console.log(error);
 		}
@@ -113,10 +119,23 @@ export default function AttendeeTable({ attendees, sortParam, sortAsc, setRefres
 										cursor: "pointer",
 										color: "blue",
 									}}
-									onClick={() => handleDelete(attendee.id)}
+									onClick={() => handleToggleDeleting(attendee.id)}
 								>
 									Delete
 								</p>
+								{deleting === attendee.id ? (
+									<>
+										<p>Are you sure?</p>
+										<Button onClick={() => handleDelete(attendee.id)}>
+											YES
+										</Button>
+										<Button onClick={() => handleToggleDeleting(attendee.id)}>
+											NO
+										</Button>
+									</>
+								) : (
+									<></>
+								)}
 							</td>
 						</tr>
 					))}

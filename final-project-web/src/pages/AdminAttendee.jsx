@@ -56,7 +56,7 @@ export default function AdminAttendee() {
 			<h2>Attendee Management</h2>
 			{/* CRUD Links here */}
 			<div>
-				<NavLink to="#">
+				<NavLink to="/admin/attendee/new">
 					<Button>Create a New Attendee</Button>
 				</NavLink>
 			</div>
