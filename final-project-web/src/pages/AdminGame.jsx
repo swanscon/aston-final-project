@@ -49,7 +49,7 @@ export default function AdminGame() {
 			<h2>Game Management</h2>
 			{/* CRUD Links here */}
 			<div>
-				<NavLink to="#">
+				<NavLink to="/admin/game/new">
 					<Button>Create a New Game</Button>
 				</NavLink>
 			</div>

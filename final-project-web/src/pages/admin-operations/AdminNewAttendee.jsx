@@ -11,7 +11,7 @@ export default function AdminNewAttendee() {
 		lastName: "",
 		status: "Pending",
 	});
-    const [changesMade, setChangesMade] = useState(false);
+	const [changesMade, setChangesMade] = useState(false);
 
 	useEffect(() => {
 		fetch("http://localhost:8182/api/event")
@@ -19,7 +19,7 @@ export default function AdminNewAttendee() {
 				if (!response.ok) {
 					throw new Error("Failed to fetch events.");
 				}
-                return response.json();
+				return response.json();
 			})
 			.then((data) => {
 				const loadedEvents = [];
@@ -48,8 +48,8 @@ export default function AdminNewAttendee() {
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
-        e.preventDefault();
-        setChangesMade(false);
+		e.preventDefault();
+		setChangesMade(false);
 		try {
 			const attendeeResponse = await fetch("http://localhost:8183/api/attendee", {
 				method: "POST",
@@ -62,17 +62,22 @@ export default function AdminNewAttendee() {
 			if (!attendeeResponse.ok) {
 				throw new Error("Failed to create new attendee.");
 			}
-            setChangesMade(true);
-            navigate("/admin/attendee");
+			setChangesMade(true);
+			navigate("/admin/attendee");
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const handleClearForm = () => {
+		setAttendee({ ...attendee, eventId: "", firstName: "", lastName: "" });
 	};
 
 	return (
 		<>
 			<h3>New Attendee</h3>
 			<NavLink to="/admin/attendee">Back</NavLink>
+			<NavLink to="#" onClick={handleClearForm}>Clear</NavLink>
 			<Form onSubmit={handleSubmit}>
 				<Form.Group>
 					<Form.Label>Select Event</Form.Label>
@@ -109,11 +114,7 @@ export default function AdminNewAttendee() {
 					Save Changes
 				</Button>
 			</Form>
-            {changesMade ? (
-                <p style={{color: 'green'}}>Changes saved successfully.</p>
-            ) : (
-                <></>
-            )}
+			{changesMade ? <p style={{ color: "green" }}>Changes saved successfully.</p> : <></>}
 		</>
 	);
 }
