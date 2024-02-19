@@ -29,12 +29,14 @@ public class GameTypeController {
     }
 
     @PutMapping("/{gameTypeId}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> updateGameType(@PathVariable Integer gameTypeId, @RequestBody GameTypeRequest gameTypeRequest) {
         gameTypeService.updateGameType(gameTypeId, gameTypeRequest);
         return new ResponseEntity<>("Game Type updated successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{gameTypeId}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> deleteGameType(@PathVariable Integer gameTypeId) {
         gameTypeService.deleteGameType(gameTypeId);
         return new ResponseEntity<>("Game Type deleted successfully", HttpStatus.OK);

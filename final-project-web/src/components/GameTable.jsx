@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 
-export default function GameTable({ games, sortParam, sortAsc }) {
+export default function GameTable({ games, sortParam, sortAsc, setRefresh }) {
 	const [pageNum, setPageNum] = useState(1);
+	const [deleting, setDeleting] = useState(null);
 	const gamesPerPage = 25;
 
 	const sortedGames = sortByField(games, sortParam, sortAsc);
@@ -27,6 +28,28 @@ export default function GameTable({ games, sortParam, sortAsc }) {
 			</Pagination.Item>
 		);
 	}
+
+	const handleToggleDeleting = (id) => {
+		setDeleting(deleting === id ? null : id);
+	};
+
+	const handleDelete = async (gameId) => {
+		try {
+			const deleteReponse = await fetch(`http://localhost:8181/api/game/${gameId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (!deleteReponse.ok) {
+				throw new Error("Failed to delete game");
+			}
+			setDeleting(null);
+			setRefresh((prevState) => !prevState);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<>
@@ -58,9 +81,30 @@ export default function GameTable({ games, sortParam, sortAsc }) {
 								>
 									Edit{" "}
 								</NavLink>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
+								<p
+									to="#"
+									style={{
+										textDecoration: "none",
+										cursor: "pointer",
+										color: "blue",
+									}}
+									onClick={() => handleToggleDeleting(game.id)}
+								>
 									Delete
-								</NavLink>
+								</p>
+								{deleting === game.id ? (
+									<>
+										<p>Are you sure?</p>
+										<Button onClick={() => handleDelete(game.id)}>
+											YES
+										</Button>
+										<Button onClick={() => handleToggleDeleting(game.id)}>
+											NO
+										</Button>
+									</>
+								) : (
+									<></>
+								)}
 							</td>
 						</tr>
 					))}

@@ -9,6 +9,7 @@ export default function AdminGame() {
 	const [searchText, setSearchText] = useState("");
 	const [sortParam, setSortParam] = useState("name");
 	const [sortAsc, setSortAsc] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 
 	useEffect(() => {
 		fetch("http://localhost:8181/api/game")
@@ -34,7 +35,7 @@ export default function AdminGame() {
 				}
 				setGames(loadedGames);
 			});
-	}, [searchText]);
+	}, [searchText, refresh]);
 
 	const handleSortBy = (e) => {
 		setSortParam(e.target.value);
@@ -89,7 +90,7 @@ export default function AdminGame() {
 					</fieldset>
 				</Form>
 			</div>
-			<GameTable games={games} sortParam={sortParam} sortAsc={sortAsc}/>
+			<GameTable games={games} sortParam={sortParam} sortAsc={sortAsc} setRefresh={setRefresh}/>
 		</>
 	);
 }
