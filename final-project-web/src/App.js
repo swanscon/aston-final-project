@@ -16,6 +16,8 @@ import AdminEditAttendee from "./pages/admin-operations/AdminEditAttendee";
 import AdminNewAttendee from "./pages/admin-operations/AdminNewAttendee";
 import AdminNewGame from "./pages/admin-operations/AdminNewGame";
 import AdminEditGame from "./pages/admin-operations/AdminEditGame";
+import AdminNewGameType from "./pages/admin-operations/AdminNewGameType";
+import AdminEditGameType from "./pages/admin-operations/AdminEditGameType";
 
 function App() {
 	return (
@@ -32,7 +34,9 @@ function App() {
 					<Route path="game" element={<AdminGame />} />
 					<Route path="game/new" element={<AdminNewGame />} />
 					<Route path="game/:id" element={<AdminEditGame />} />
-					<Route path="gameType" element={<AdminGameType />} />
+					<Route path="game-type" element={<AdminGameType />} />
+					<Route path="game-type/new" element={<AdminNewGameType />} />
+					<Route path="game-type/:id" element={<AdminEditGameType />} />
 					<Route path="event" element={<AdminEvent />} />
 					<Route path="attendee" element={<AdminAttendee />} />
 					<Route path="attendee/new" element={<AdminNewAttendee />} />

@@ -28,6 +28,12 @@ public class GameTypeController {
         return new ResponseEntity<>(gameTypeService.getAllGameTypes(), HttpStatus.OK);
     }
 
+    @GetMapping("/{gameTypeId}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<GameTypeResponse> getGameTypeById(@PathVariable Integer gameTypeId) {
+        return new ResponseEntity<>(gameTypeService.getGameTypeById(gameTypeId), HttpStatus.OK);
+    }
+
     @PutMapping("/{gameTypeId}")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> updateGameType(@PathVariable Integer gameTypeId, @RequestBody GameTypeRequest gameTypeRequest) {

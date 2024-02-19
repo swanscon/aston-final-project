@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 export default function AdminGame() {
 	const [gameTypes, setGameTypes] = useState([]);
 	const [searchText, setSearchText] = useState("");
+	const [refresh, setRefresh] = useState(false);
 
 	useEffect(() => {
 		fetch("http://localhost:8181/api/game/type")
@@ -29,20 +30,20 @@ export default function AdminGame() {
 				}
 				setGameTypes(sortByName(loadedGameTypes));
 			});
-	}, [searchText]);
+	}, [searchText, refresh]);
 
 	return (
 		<>
 			<h2>Game Type management</h2>
 			{/* CRUD Links here */}
 			<div>
-				<NavLink to="#">
-					<Button>Create a New Game</Button>
+				<NavLink to={`/admin/game-type/new`}>
+					<Button>Create a New Game Type</Button>
 				</NavLink>
 			</div>
 			<NavLink to="/admin">Back</NavLink>
 			<AdminSearch onSearch={setSearchText} />
-			<GameTypeTable gameTypes={gameTypes} />
+			<GameTypeTable gameTypes={gameTypes} setRefresh={setRefresh}/>
 		</>
 	);
 }

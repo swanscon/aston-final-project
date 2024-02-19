@@ -33,7 +33,7 @@ public class GameController {
         return new ResponseEntity<>(gameService.getGameById(gameId), HttpStatus.OK);
     }
 
-    @GetMapping("/type/{gameTypeName}")
+    @GetMapping("/type-name/{gameTypeName}")
     public ResponseEntity<List<GameResponse>> getGamesByGameType(@PathVariable String gameTypeName) {
         return new ResponseEntity<>(gameService.getAllGamesByGameTypeName(gameTypeName), HttpStatus.OK);
     }

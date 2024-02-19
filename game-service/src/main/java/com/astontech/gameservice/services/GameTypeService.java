@@ -3,6 +3,7 @@ package com.astontech.gameservice.services;
 import com.astontech.gameservice.dto.GameTypeRequest;
 import com.astontech.gameservice.dto.GameTypeResponse;
 import com.astontech.gameservice.exceptions.ForeignKeyRestraintException;
+import com.astontech.gameservice.models.Game;
 import com.astontech.gameservice.models.GameType;
 import com.astontech.gameservice.repositories.GameTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -43,6 +44,12 @@ public class GameTypeService {
             log.info("No game types found");
         }
         return gameTypeResponseList;
+    }
+
+    public GameTypeResponse getGameTypeById(Integer id) {
+        GameType gameType = gameTypeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No game type found with id: " + id));
+        return mapToGameTypeResponse(gameType);
     }
     //endregion
 
