@@ -12,7 +12,7 @@ export default function AdminList() {
                             <NavLink to="/admin/game">Game</NavLink>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <NavLink to="/admin/gameType">Game Type</NavLink>
+                            <NavLink to="/admin/game-type">Game Type</NavLink>
                         </ListGroup.Item>
                     </ListGroup>
                 </ListGroup.Item>

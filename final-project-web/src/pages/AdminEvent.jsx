@@ -9,6 +9,7 @@ export default function AdminEvent() {
 	const [searchText, setSearchText] = useState("");
 	const [sortParam, setSortParam] = useState("name");
 	const [sortAsc, setSortAsc] = useState(true);
+	const [refresh, setRefresh] = useState(false);
 
 	useEffect(() => {
 		const fetchEventsAndAttendeeCounts = async () => {
@@ -50,8 +51,11 @@ export default function AdminEvent() {
 				console.error(error);
 			}
 		};
+		if (refresh) {
+			setRefresh(false);
+		}
 		fetchEventsAndAttendeeCounts();
-	}, [searchText]);
+	}, [searchText, refresh]);
 
 	const handleSortBy = (e) => {
 		setSortParam(e.target.value);
@@ -66,7 +70,7 @@ export default function AdminEvent() {
 			<h2>Event Management</h2>
 			{/* CRUD Links here */}
 			<div>
-				<NavLink to="#">
+				<NavLink to="/admin/event/new">
 					<Button>Create a New Game</Button>
 				</NavLink>
 			</div>
@@ -108,7 +112,12 @@ export default function AdminEvent() {
 					</fieldset>
 				</Form>
 			</div>
-			<EventTable events={events} sortParam={sortParam} sortAsc={sortAsc} />
+			<EventTable
+				events={events}
+				sortParam={sortParam}
+				sortAsc={sortAsc}
+				setRefresh={setRefresh}
+			/>
 		</>
 	);
 }

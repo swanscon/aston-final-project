@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { sortByField } from "../utils/SortByField";
 import { handleDateFormat } from "../utils/HandleDateFormat";
 
-export default function EventTable({ events, sortParam, sortAsc }) {
+export default function EventTable({ events, sortParam, sortAsc, setRefresh }) {
 	const [pageNum, setPageNum] = useState(1);
 	const [games, setGames] = useState([]);
+	const [deleting, setDeleting] = useState(null);
 	const eventsPerPage = 25;
 
 	const handleGameNameFromId = (gameId) => {
@@ -64,6 +65,28 @@ export default function EventTable({ events, sortParam, sortAsc }) {
 			.catch((error) => console.log(error));
 	}, []);
 
+	const handleToggleDeleting = (id) => {
+		setDeleting(deleting === id ? null : id);
+	};
+
+	const handleDelete = async (eventId) => {
+		try {
+			const deleteResponse = await fetch(`http://localhost:8182/api/event/${eventId}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (!deleteResponse.ok) {
+				throw new Error("Failed to delete event");
+			}
+			setDeleting(null);
+			setRefresh((prevState) => !prevState);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			<Table striped bordered hover>
@@ -75,6 +98,7 @@ export default function EventTable({ events, sortParam, sortAsc }) {
 						<th>Start Time</th>
 						<th>End Time</th>
 						<th>Attendees</th>
+						<th>Description</th>
 						<th>Links</th>
 					</tr>
 				</thead>
@@ -86,17 +110,36 @@ export default function EventTable({ events, sortParam, sortAsc }) {
 							<td>{handleDateFormat(event.eventDate)}</td>
 							<td>{event.startTime}</td>
 							<td>{event.endTime}</td>
+							<td>{event.description}</td>
 							<td>{event.attendeeCount}</td>
 							<td>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
-									View{" "}
-								</NavLink>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
+								<NavLink to={`/admin/event/${event.id}`} style={{ textDecoration: "none" }}>
 									Edit{" "}
 								</NavLink>
-								<NavLink to="#" style={{ textDecoration: "none" }}>
+								<p
+									to="#"
+									style={{
+										textDecoration: "none",
+										cursor: "pointer",
+										color: "blue",
+									}}
+									onClick={() => handleToggleDeleting(event.id)}
+								>
 									Delete
-								</NavLink>
+								</p>
+								{deleting === event.id ? (
+									<>
+										<p>Are you sure?</p>
+										<Button onClick={() => handleDelete(event.id)}>
+											YES
+										</Button>
+										<Button onClick={() => handleToggleDeleting(event.id)}>
+											NO
+										</Button>
+									</>
+								) : (
+									<></>
+								)}
 							</td>
 						</tr>
 					))}
