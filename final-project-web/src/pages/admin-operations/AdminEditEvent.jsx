@@ -42,7 +42,7 @@ export default function AdminEditEvent() {
             .catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}, [id]);
 
     const handleChange = (e) => {
 		setEvent({
