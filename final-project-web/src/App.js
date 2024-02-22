@@ -20,6 +20,7 @@ import AdminNewGameType from "./pages/admin-operations/AdminNewGameType";
 import AdminEditGameType from "./pages/admin-operations/AdminEditGameType";
 import AdminNewEvent from "./pages/admin-operations/AdminNewEvent";
 import AdminEditEvent from "./pages/admin-operations/AdminEditEvent";
+import LoginPage from "./pages/auth-operations/LoginPage";
 
 function App() {
 	return (
@@ -46,6 +47,7 @@ function App() {
 					<Route path="attendee/new" element={<AdminNewAttendee />} />
 					<Route path="attendee/:id" element={<AdminEditAttendee />} />
 				</Route>
+				<Route path="/login" element={<LoginPage />} />
 			</Routes>
 		</div>
 	);

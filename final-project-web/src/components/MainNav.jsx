@@ -1,23 +1,31 @@
-import { Nav, Navbar, NavbarBrand } from "react-bootstrap"
-import { NavLink } from "react-router-dom"
+import { Col, Container, Nav, Navbar, NavbarBrand, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 export default function MainNav() {
-    return (
-        <div style={{border: 'solid red 2px'}}>
-            <Navbar>
-                <Nav>
-                    <NavbarBrand>
-                        TABLFG
-                    </NavbarBrand>
-                </Nav>
-                <Nav>
-                    <NavLink to="/">Home</NavLink>
-
-                    <NavLink to="/events">My Events</NavLink>
-
-                    <NavLink to="/games">Browse Games</NavLink>
-                </Nav>
-            </Navbar>
-        </div>
-    )
+	return (
+		<div style={{ border: "solid red 2px" }}>
+			<Navbar>
+				<Nav>
+					<Container>
+						<NavbarBrand>TABLFG</NavbarBrand>
+					</Container>
+				</Nav>
+				<Nav>
+					<Container>
+						<Row>
+							<Col>
+								<NavLink to="/">Home</NavLink>
+							</Col>
+							<Col>
+								<NavLink to="/events">My Events</NavLink>
+							</Col>
+							<Col>
+								<NavLink to="/games">Browse Games</NavLink>
+							</Col>
+						</Row>
+					</Container>
+				</Nav>
+			</Navbar>
+		</div>
+	);
 }
