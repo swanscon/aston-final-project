@@ -8,4 +8,5 @@ import java.util.List;
 public interface UserEventRepository extends JpaRepository<UserEvent, Integer> {
 
     List<UserEvent> findAllByUserId(Integer userId);
+    void deleteByEventId(Integer eventId);
 }

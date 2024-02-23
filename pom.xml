@@ -21,6 +21,7 @@
         <module>event-service</module>
         <module>attendee-service</module>
         <module>invitation-service</module>
+        <module>user-service</module>
     </modules>
 
     <properties>

@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class UserResponse {
-    private Integer id;
-    private String username;
-    private String password;
-    private Boolean admin;
+public class UserEventResponse {
+    private Integer eventId;
 }
