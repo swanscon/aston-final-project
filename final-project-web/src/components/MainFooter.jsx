@@ -10,7 +10,7 @@ export default function MainFooter() {
 			<Navbar>
 				<Nav>
 					<NavLink to="/">TABLFG</NavLink>
-					{!auth.token || auth.role[0] !== "ROLE_ADMIN" ? (
+					{!auth.token || auth.role?.[0] !== "ROLE_ADMIN" ? (
 						<></>
 					) : (
 						<NavLink to="/admin">Admin</NavLink>

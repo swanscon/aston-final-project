@@ -8,7 +8,7 @@ export const UserProtected = () => {
 
 	useEffect(() => {
 		if (auth.token === "") {
-			navigate("/login");
+			navigate("/");
 		}
 	}, [auth.token, navigate]);
 

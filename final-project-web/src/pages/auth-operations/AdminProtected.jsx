@@ -7,9 +7,7 @@ export const AdminProtected = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (auth.token === "") {
-			navigate("/login");
-		} else if (auth.role[0] === "ROLE_USER") {
+		if (auth.token === "" || auth.role[0] === "ROLE_USER") {
 			navigate("/");
 		}
 	}, [auth.token, auth.role, navigate]);

@@ -71,7 +71,7 @@ export default function AdminEvent() {
 			{/* CRUD Links here */}
 			<div>
 				<NavLink to="/admin/event/new">
-					<Button>Create a New Game</Button>
+					<Button>Create a New Event</Button>
 				</NavLink>
 			</div>
 			<NavLink to="/admin">Back</NavLink>

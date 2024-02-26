@@ -5,8 +5,10 @@ import DatePicker from "react-datepicker";
 import TimePicker from "react-bootstrap-time-picker";
 import { sortByField } from "../../utils/SortByField";
 import { formatTimeForSubmission } from "../../utils/HandleTimeFormat";
+import useAuth from "../../context/AuthContext";
 
 export default function AdminNewEvent() {
+	const { auth } = useAuth();
 	const [event, setEvent] = useState({
 		name: "",
 		gameId: "",
@@ -75,6 +77,27 @@ export default function AdminNewEvent() {
 			if (!eventResponse.ok) {
 				throw new Error("Failed to create new event.");
 			}
+
+			const eventData = await eventResponse.json();
+
+			const newUserEvent = {
+				eventId: eventData.id,
+				userId: auth.id, //eventually add SELECT USER ID
+			};
+
+			const userEventResponse = await fetch("http://localhost:8185/api/user/event", {
+				method: "POST",
+				body: JSON.stringify(newUserEvent),
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${auth.token}`,
+				},
+			});
+
+            if (!userEventResponse.ok) {
+                throw new Error("Failed to create user event");
+            }
+
 			navigate("/admin/event");
 		} catch (error) {
 			console.log(error);

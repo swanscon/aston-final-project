@@ -1,5 +1,6 @@
 package com.astontech.userservice.services;
 
+import com.astontech.userservice.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,7 +35,11 @@ public class JwtService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("roles", roles);
-        return generateToken(claims, userDetails);
+        if(userDetails instanceof User) {
+            User user = (User) userDetails;
+            claims.put("id", user.getId());
+        }
+        return generateToken(claims, userDetails.getUsername());
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -47,11 +52,11 @@ public class JwtService {
         return claimsResolvers.apply(claims);
     }
 
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extraClaims, String username) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

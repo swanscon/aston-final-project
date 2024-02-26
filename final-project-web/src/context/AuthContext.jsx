@@ -9,6 +9,7 @@ export default function useAuth() {
 
 export const AuthProvider = ({ children }) => {
 	const [auth, setAuth] = useState({
+		id: 0,
 		user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
 		token: localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : "",
 		role: "",
@@ -17,8 +18,10 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		if (auth.token) {
 			const decoded = jwtDecode(auth.token);
+
 			setAuth((prevAuth) => ({
 				...prevAuth,
+				id: decoded.id,
 				user: decoded.sub,
 				role: decoded.roles,
 			}));
@@ -80,6 +83,7 @@ export const AuthProvider = ({ children }) => {
 	const logout = () => {
 		localStorage.clear();
 		setAuth({
+			id: 0,
 			user: null,
 			token: "",
 			role: "",

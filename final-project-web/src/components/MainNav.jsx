@@ -24,9 +24,13 @@ export default function MainNav() {
 							<Col>
 								<NavLink to="/">Home</NavLink>
 							</Col>
-							<Col>
-								<NavLink to="/events">My Events</NavLink>
-							</Col>
+							{!auth.token ? (
+								<></>
+							) : (
+								<Col>
+									<NavLink to="/events">My Events</NavLink>
+								</Col>
+							)}
 							<Col>
 								<NavLink to="/games">Browse Games</NavLink>
 							</Col>
@@ -40,13 +44,11 @@ export default function MainNav() {
 									</Col>
 								</>
 							) : (
-								<>
-									<Col>
-										<NavLink to="#" onClick={handleLogout}>
-											Logout
-										</NavLink>
-									</Col>
-								</>
+								<Col>
+									<NavLink to="#" onClick={handleLogout}>
+										Logout
+									</NavLink>
+								</Col>
 							)}
 						</Row>
 					</Container>
