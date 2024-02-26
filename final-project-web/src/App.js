@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/styles.css"
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import MyEvents from "./pages/MyEvents";
@@ -27,7 +27,7 @@ import { AdminProtected } from "./pages/auth-operations/AdminProtected";
 
 function App() {
 	return (
-		<div className="App">
+		<div className="site-container">
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/games" element={<BrowseGames />} />

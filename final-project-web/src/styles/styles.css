@@ -1,0 +1,62 @@
+.site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1;  /* This makes the content area grow and push the footer down */
+    padding: 50px;  /* Add padding as needed */
+}
+
+/* Pages */
+.home-page {
+	background-color: #121212; /* Dark background */
+	color: #f5f5f5; /* Light text */
+	padding-top: 20px;
+	padding-bottom: 20px;
+	min-height: 100vh; /* Make sure it takes minimum full height */
+}
+
+.content p {
+	text-align: justify; /* Or 'center' if you prefer */
+	margin-top: 20px;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: #333; /* Dark background for the navbar */
+    border-bottom: 1px solid #474747; /* Slight border for depth */
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: #f5f5f5; /* Light text */
+}
+
+.navbar-custom .nav-link {
+    margin-right: 15px; /* Spacing between links */
+}
+
+.navbar-custom .nav-link:hover {
+    color: #c5c5c5; /* Change color on hover for interaction feedback */
+}
+
+/* Footer */
+.footer-custom {
+    background-color: #333;
+    color: #f5f5f5;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #474747;
+    padding: 10px 0;
+}
+
+.footer-custom .nav-link {
+    color: #f5f5f5;
+    margin: 0 15px;
+}
+
+.footer-custom .nav-link:hover {
+    color: #c5c5c5;
+}

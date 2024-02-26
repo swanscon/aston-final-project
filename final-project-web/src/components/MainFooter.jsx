@@ -1,4 +1,4 @@
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Container } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import useAuth from "../context/AuthContext";
 
@@ -6,17 +6,19 @@ export default function MainFooter() {
 	const { auth } = useAuth();
 
 	return (
-		<div style={{ border: "solid green 2px" }}>
-			<Navbar>
-				<Nav>
-					<NavLink to="/">TABLFG</NavLink>
-					{!auth.token || auth.role?.[0] !== "ROLE_ADMIN" ? (
-						<></>
-					) : (
-						<NavLink to="/admin">Admin</NavLink>
+		<Navbar className="footer-custom">
+			<Container>
+				<Nav className="m-auto">
+					<NavLink className="nav-link" to="/">
+						TABLFG
+					</NavLink>
+					{auth.token && auth.role?.[0] === "ROLE_ADMIN" && (
+						<NavLink className="nav-link" to="/admin">
+							Admin
+						</NavLink>
 					)}
 				</Nav>
-			</Navbar>
-		</div>
+			</Container>
+		</Navbar>
 	);
 }

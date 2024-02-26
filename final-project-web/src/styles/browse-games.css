@@ -1,0 +1,40 @@
+.browse-games-container {
+    background-color: #333; /* Dark background */
+    color: #f5f5f5; /* Light text */
+    margin: 20px 10%; /* Adjust the margins as needed */
+    padding: 20px;
+    border: solid 2px green; /* Or remove the border if you prefer */
+    border-radius: 10px; /* Optional: adds rounded corners */
+}
+
+.browse-games-container h1,
+.browse-games-container h2 {
+    text-align: center; /* Centering titles */
+}
+
+.game-type-section {
+    margin-top: 20px;
+}
+
+.game-type-section h2 {
+    border-bottom: 1px solid #777; /* Subtle separator for game types */
+    color: #f5f5f5;
+}
+
+.game-list {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.game-list li {
+    padding: 10px; /* Add some space around each game entry */
+    border-bottom: 1px solid #555; /* Subtle separator for individual games */
+}
+
+.game-list li:last-child {
+    border-bottom: none; /* Remove bottom border for the last item */
+}
+
+.game-list li strong {
+    color: #adff2f; /* Highlight game names, adjust color as needed */
+}

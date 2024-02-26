@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MainNav from "../components/MainNav";
 import { sortByField } from "../utils/SortByField";
 import MainFooter from "../components/MainFooter";
+import "../styles/browse-games.css";
 
 export default function BrowseGames() {
     const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +58,7 @@ export default function BrowseGames() {
     return (
         <>
             <MainNav />
-            <div style={{ border: "solid green 2px" }}>
+            <div className="browse-games-container">
                 {isLoading ? (
                     <>
                         <h1>Browse Games</h1>
@@ -67,9 +68,9 @@ export default function BrowseGames() {
                     <>
                         <h1>Browse Games</h1>
                         {getGamesByType().map((type) => (
-                            <div key={type.id}>
+                            <div key={type.id} className="game-type-section">
                                 <h2>{type.name}</h2>
-                                <ul style={{ listStyle: "none" }}>
+                                <ul className="game-list">
                                     {type.games.map((game) => (
                                         <li key={game.id}>
                                             <strong>{game.name}:</strong>{" "}

@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Navbar, NavbarBrand, Row } from "react-bootstrap";
+import { Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import useAuth from "../context/AuthContext";
 
@@ -11,49 +11,43 @@ export default function MainNav() {
 	};
 
 	return (
-		<div style={{ border: "solid red 2px" }}>
-			<Navbar>
-				<Nav>
-					<Container>
-						<NavbarBrand>TABLFG</NavbarBrand>
-					</Container>
+		<Navbar className="navbar-custom">
+			<Container>
+				<NavbarBrand>TABLFG</NavbarBrand>
+				<Nav className="ml-auto">
+					<NavLink className="nav-link" to="/">
+						Home
+					</NavLink>
+
+					{!auth.token ? (
+						<></>
+					) : (
+						<NavLink className="nav-link" to="/events">
+							My Events
+						</NavLink>
+					)}
+
+					<NavLink className="nav-link" to="/games">
+						Browse Games
+					</NavLink>
+
+					{!auth.token ? (
+						<>
+							<NavLink className="nav-link" to="/login">
+								Login
+							</NavLink>
+
+							<NavLink className="nav-link" to="/signup">
+								Signup
+							</NavLink>
+						</>
+					) : (
+						<NavLink className="nav-link" to="#" onClick={handleLogout}>
+							Logout
+						</NavLink>
+					)}
 				</Nav>
-				<Nav>
-					<Container>
-						<Row>
-							<Col>
-								<NavLink to="/">Home</NavLink>
-							</Col>
-							{!auth.token ? (
-								<></>
-							) : (
-								<Col>
-									<NavLink to="/events">My Events</NavLink>
-								</Col>
-							)}
-							<Col>
-								<NavLink to="/games">Browse Games</NavLink>
-							</Col>
-							{!auth.token ? (
-								<>
-									<Col>
-										<NavLink to="/login">Login</NavLink>
-									</Col>
-									<Col>
-										<NavLink to="/signup">Signup</NavLink>
-									</Col>
-								</>
-							) : (
-								<Col>
-									<NavLink to="#" onClick={handleLogout}>
-										Logout
-									</NavLink>
-								</Col>
-							)}
-						</Row>
-					</Container>
-				</Nav>
-			</Navbar>
-		</div>
+			</Container>
+		</Navbar>
 	);
 }
