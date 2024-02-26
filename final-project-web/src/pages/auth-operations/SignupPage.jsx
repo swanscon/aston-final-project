@@ -3,8 +3,8 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../context/AuthContext";
 
-export default function LoginPage() {
-	const { login } = useAuth();
+export default function SignupPage() {
+	const { signup } = useAuth();
 
 	const [user, setUser] = useState({
 		username: "",
@@ -22,7 +22,7 @@ export default function LoginPage() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		login(user.username, user.password);
+		signup(user.username, user.password);
 		navigate("/");
 	};
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
 					autoComplete="current-password"
 				/>
 			</Form.Group>
-			<Button type="submit">Login</Button>
+			<Button type="submit">Signup</Button>
 		</Form>
 	);
 }

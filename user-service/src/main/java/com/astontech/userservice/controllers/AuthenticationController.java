@@ -3,9 +3,11 @@ package com.astontech.userservice.controllers;
 import com.astontech.userservice.dto.JwtAuthenticationResponse;
 import com.astontech.userservice.dto.UserRequest;
 import com.astontech.userservice.services.AuthenticationService;
+import com.astontech.userservice.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
