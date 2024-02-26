@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { useNavigate, NavLink } from "react-router-dom";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import MainNav from "../components/MainNav";
 import EventForm from "../components/EventForm";
 import AttendeeForm from "../components/AttendeeForm";
 import MainFooter from "../components/MainFooter";
 import useAuth from "../context/AuthContext";
+import "../styles/event.css";
+import "../styles/styles.css";
 
 export default function NewEvent() {
 	const { auth } = useAuth();
@@ -65,14 +67,16 @@ export default function NewEvent() {
 				},
 			});
 
-            if (!userEventResponse.ok) {
-                throw new Error("Failed to create user event");
-            }
+			if (!userEventResponse.ok) {
+				throw new Error("Failed to create user event");
+			}
 
-			const newAttendees = attendees.map((attendee) => ({
-				...attendee,
-				eventId: eventData.id,
-			}));
+			const newAttendees = attendees
+				.filter((attendee) => !(attendee.firstName === "" && attendee.lastName === ""))
+				.map((attendee) => ({
+					...attendee,
+					eventId: eventData.id,
+				}));
 
 			// Submit each attendee
 			for (const attendee of newAttendees) {
@@ -94,13 +98,40 @@ export default function NewEvent() {
 	return (
 		<>
 			<MainNav />
-			<div style={{ border: "solid orange 2px" }}>
-				<h1>Create New Event</h1>
-				<EventForm eventDetails={eventDetails} onEventChange={setEventDetails} />
-				<AttendeeForm attendees={attendees} onAttendeesChange={setAttendees} />
-				<div>
-					<Button onClick={handleFormFilled}>Submit</Button>
-				</div>
+			<div className="content-wrap">
+				<Container fluid classname="page-display">
+					<Row className="justify-content-center">
+						<Col md={8} lg={6}>
+							<Card className="event-card">
+								<Card.Header className="event-header">Create New Event</Card.Header>
+								<Card.Body className="event-body">
+									<EventForm
+										eventDetails={eventDetails}
+										onEventChange={setEventDetails}
+									/>
+									<AttendeeForm
+										attendees={attendees}
+										onAttendeesChange={setAttendees}
+									/>
+
+									<Button
+										variant="primary"
+										className="event-button"
+										onClick={handleFormFilled}
+									>
+										Submit
+									</Button>
+
+									<NavLink to="/events/" className="d-block mt-3">
+										<Button variant="secondary" className="event-button">
+											Back
+										</Button>
+									</NavLink>
+								</Card.Body>
+							</Card>
+						</Col>
+					</Row>
+				</Container>
 			</div>
 			<MainFooter />
 		</>

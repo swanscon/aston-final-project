@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Card } from "react-bootstrap";
 import { sortByField } from "../utils/SortByField";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-bootstrap-time-picker";
@@ -84,83 +84,91 @@ const EventForm = ({ eventDetails, onEventChange }) => {
 				</>
 			) : (
 				<Form>
-					<Form.Group className="mb-3" controlId="formEventName">
-						<Form.Label>Event Name</Form.Label>
-						<Form.Control
-							type="text"
-							placeholder="Enter event name"
-							name="name"
-							value={eventDetails.name || ""}
-							onChange={handleChange}
-						/>
-					</Form.Group>
+					<Card className="mb-4">
+						<Card.Body>
+							<Card.Title>Event Details</Card.Title>
 
-					<Form.Group>
-						<Form.Label>Select Game</Form.Label>
-						<Form.Select
-							name="gameId"
-							value={eventDetails.gameId}
-							onChange={handleChange}
-						>
-							<option value="">Select a game...</option>
-							{gameTypes.map((type) => (
-								<optgroup label={type.name} key={type.id}>
-									{games
-										.filter((game) => game.gameType.id === type.id)
-										.map((game) => (
-											<option value={game.id} key={game.id}>
-												{game.name}
-											</option>
-										))}
-								</optgroup>
-							))}
-						</Form.Select>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formEventName">
+								<Form.Label>Event Name</Form.Label>
+								<Form.Control
+									type="text"
+									placeholder="Enter event name"
+									name="name"
+									value={eventDetails.name || ""}
+									onChange={handleChange}
+								/>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formEventDate">
-						<Form.Label>Event Date</Form.Label>
-						<DatePicker
-							selected={
-								eventDetails.eventDate ? new Date(eventDetails.eventDate) : null
-							}
-							onChange={handleDateChange}
-							className="form-control"
-						/>
-					</Form.Group>
-					<Form.Group className="mb-3" controlId="formStartTime">
-						<Form.Label>Start Time</Form.Label>
-						<TimePicker
-							start="00:00"
-							end="23:59"
-							step={15}
-							format={12}
-							value={eventDetails.startTime}
-							onChange={(time) => handleTimeChange(time, "startTime")}
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Select Game</Form.Label>
+								<Form.Select
+									name="gameId"
+									value={eventDetails.gameId}
+									onChange={handleChange}
+								>
+									<option value="">Select a game...</option>
+									{gameTypes.map((type) => (
+										<optgroup label={type.name} key={type.id}>
+											{games
+												.filter((game) => game.gameType.id === type.id)
+												.map((game) => (
+													<option value={game.id} key={game.id}>
+														{game.name}
+													</option>
+												))}
+										</optgroup>
+									))}
+								</Form.Select>
+							</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formEndTime">
-						<Form.Label>End Time</Form.Label>
-						<TimePicker
-							start="00:00"
-							end="23:59"
-							step={15}
-							format={12}
-							value={eventDetails.endTime}
-							onChange={(time) => handleTimeChange(time, "endTime")}
-						/>
-					</Form.Group>
-					<Form.Group className="mb-3" controlId="formEventDescription">
-						<Form.Label>Description</Form.Label>
-						<Form.Control
-							as="textarea"
-							rows={3}
-							placeholder="Enter event description"
-							name="description"
-							value={eventDetails.description}
-							onChange={handleChange}
-						/>
-					</Form.Group>
+							<Form.Group className="mb-3" controlId="formEventDate">
+								<Form.Label>Event Date</Form.Label>
+								<DatePicker
+									selected={
+										eventDetails.eventDate
+											? new Date(eventDetails.eventDate)
+											: null
+									}
+									onChange={handleDateChange}
+									className="form-control"
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formStartTime">
+								<Form.Label>Start Time</Form.Label>
+								<TimePicker
+									start="00:00"
+									end="23:59"
+									step={15}
+									format={12}
+									value={eventDetails.startTime}
+									onChange={(time) => handleTimeChange(time, "startTime")}
+								/>
+							</Form.Group>
+
+							<Form.Group className="mb-3" controlId="formEndTime">
+								<Form.Label>End Time</Form.Label>
+								<TimePicker
+									start="00:00"
+									end="23:59"
+									step={15}
+									format={12}
+									value={eventDetails.endTime}
+									onChange={(time) => handleTimeChange(time, "endTime")}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formEventDescription">
+								<Form.Label>Description</Form.Label>
+								<Form.Control
+									as="textarea"
+									rows={3}
+									placeholder="Enter event description"
+									name="description"
+									value={eventDetails.description}
+									onChange={handleChange}
+								/>
+							</Form.Group>
+						</Card.Body>
+					</Card>
 				</Form>
 			)}
 		</>

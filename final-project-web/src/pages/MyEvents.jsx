@@ -1,10 +1,12 @@
-import { Button } from "react-bootstrap";
+import { Button, Container, ListGroup, Spinner, Row, Col } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import MainNav from "../components/MainNav";
 import { useEffect, useState } from "react";
 import MainFooter from "../components/MainFooter";
 import { handleDateFormat } from "../utils/HandleDateFormat";
 import useAuth from "../context/AuthContext";
+import "../styles/event.css";
+import "../styles/styles.css";
 
 export default function MyEvents() {
 	const { auth } = useAuth();
@@ -20,7 +22,7 @@ export default function MyEvents() {
 					{
 						method: "GET",
 						headers: {
-							"Authorization": `Bearer ${auth.token}`,
+							Authorization: `Bearer ${auth.token}`,
 							"Content-Type": "application/json",
 						},
 					}
@@ -35,7 +37,9 @@ export default function MyEvents() {
 					const eventsResponse = await fetch("http://localhost:8182/api/event");
 					if (!eventsResponse.ok) throw new Error("Failed to fetch all events");
 					const eventsData = await eventsResponse.json();
-					const loadedEvents = eventsData.filter(event => loadedUserEvents.includes(event.id));
+					const loadedEvents = eventsData.filter((event) =>
+						loadedUserEvents.includes(event.id)
+					);
 					setEvents(loadedEvents);
 				} else {
 					setEvents([]);
@@ -53,29 +57,52 @@ export default function MyEvents() {
 	return (
 		<>
 			<MainNav />
-			<div style={{ border: "solid orange 2px" }}>
-				{isLoading ? (
-					<>
-						<h1>My Events</h1>
-						<p>Loading data...</p>
-					</>
-				) : (
-					<>
-						<h1>My Events</h1>
-						<NavLink to="/events/new">
-							<Button style={{ cursor: "pointer" }}>Create a New Event</Button>
-						</NavLink>
-						<ul style={{ listStyle: "none" }}>
-							{events.map((event) => (
-								<NavLink to={`/events/${event.id}`} key={event.id}>
-									<li>
-										{event.name} - {handleDateFormat(event.eventDate)}
-									</li>
-								</NavLink>
-							))}
-						</ul>
-					</>
-				)}
+			<div className="content-wrap">
+				<Container fluid className="page-display">
+					<Row className="justify-content-center">
+						<Col md={8} lg={6}>
+							{" "}
+							{/* Adjust these values based on your desired width */}
+							<h1 className="text-center mt-5">My Events</h1>
+							<div className="content">
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
+									risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing
+									nec, ultricies sed, dolor. Cras elementum ultrices diam.
+								</p>
+							</div>
+							{isLoading ? (
+								<div className="text-center">
+									<Spinner animation="border" role="status">
+										<span className="visually-hidden">Loading...</span>
+									</Spinner>
+								</div>
+							) : (
+								<>
+									<NavLink to="/events/new">
+										<Button variant="success" className="mb-3">
+											Create a New Event
+										</Button>
+									</NavLink>
+									<ListGroup>
+										{events.map((event) => (
+											<NavLink
+												to={`/events/${event.id}`}
+												key={event.id}
+												className="event-link"
+											>
+												<ListGroup.Item action variant="light">
+													{event.name} -{" "}
+													{handleDateFormat(event.eventDate)}
+												</ListGroup.Item>
+											</NavLink>
+										))}
+									</ListGroup>
+								</>
+							)}
+						</Col>
+					</Row>
+				</Container>
 			</div>
 			<MainFooter />
 		</>

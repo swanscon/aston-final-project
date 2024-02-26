@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import useAuth from "../../context/AuthContext";
+import "../../styles/styles.css";
 
 export default function SignupPage() {
 	const { signup } = useAuth();
@@ -27,28 +28,48 @@ export default function SignupPage() {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<Form.Group className="mb-3" controlId="formBasicUsername">
-				<Form.Label>Username</Form.Label>
-				<Form.Control
-					type="text"
-					name="username"
-					placeholder="Enter username..."
-					onChange={handleChange}
-                    autoComplete="current-username"
-				/>
-			</Form.Group>
-			<Form.Group className="mb-3" controlId="formBasicPassword">
-				<Form.Label>Password</Form.Label>
-				<Form.Control
-					type="password"
-					name="password"
-					placeholder="Enter password..."
-					onChange={handleChange}
-					autoComplete="current-password"
-				/>
-			</Form.Group>
-			<Button type="submit">Signup</Button>
-		</Form>
+		<div className="content-wrap">
+			<div className="page-display">
+				<Form
+					onSubmit={handleSubmit}
+					className="container"
+					style={{ maxWidth: "420px", margin: "auto" }}
+				>
+					<h2 className="text-center mb-4">Signup</h2>
+					<Form.Group className="mb-3" controlId="formBasicUsername">
+						<Form.Label>Username</Form.Label>
+						<Form.Control
+							type="text"
+							name="username"
+							placeholder="Enter username..."
+							onChange={handleChange}
+							autoComplete="current-username"
+						/>
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="formBasicPassword">
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type="password"
+							name="password"
+							placeholder="Enter password..."
+							onChange={handleChange}
+							autoComplete="current-password"
+						/>
+					</Form.Group>
+					<Button type="submit" className="w-100">
+						Signup
+					</Button>
+					<div className="text-center mt-3">
+						<p>
+							Already have an account? Click here to{" "}
+							<NavLink to="/login" className="text-light">
+								Login
+							</NavLink>
+							!
+						</p>
+					</div>
+				</Form>
+			</div>
+		</div>
 	);
 }

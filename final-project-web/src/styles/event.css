@@ -1,0 +1,77 @@
+/* My Events */
+.my-events-list {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.my-events-list li {
+    padding: 10px; /* Add some space around each event entry */
+    border-bottom: 1px solid #555; /* Subtle separator for individual events */
+    color: #f5f5f5; /* Ensuring text color is light for readability */
+}
+
+.my-events-list li:last-child {
+    border-bottom: none; /* Remove bottom border for the last item */
+}
+
+.my-events-list li a {
+    text-decoration: none; /* Removing underline from links */
+    color: #f5f5f5; /* Light text for readability */
+}
+
+.my-events-list li a:hover {
+    color: #c5c5c5; /* Change color on hover for interaction feedback */
+}
+
+/* Loader Spinner styles if used in MyEvents */
+.spinner-border {
+    color: orange; /* Matching the event container border for consistency */
+}
+
+
+/* View Event */
+.event-accepted {
+	color: green;
+}
+
+.event-declined {
+	color: red;
+}
+
+.event-pending {
+	color: gold;
+}
+
+.event-card {
+    margin-top: 20px;
+    background-color: #f8f9fa; /* Light gray background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+}
+
+.event-header {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text for contrast */
+    border-top-left-radius: 8px; /* Rounded corners */
+    border-top-right-radius: 8px; /* Rounded corners */
+    padding: 10px 15px; /* Some padding around text */
+}
+
+.event-body {
+    padding: 20px; /* More space inside the card body */
+}
+
+.event-attendee-list {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+
+.event-attendee-item {
+    padding: 10px; /* Space around each attendee */
+    border-bottom: 1px solid #ddd; /* Separator between attendees */
+}
+
+.event-button {
+    margin-top: 10px; /* Space above the button */
+    width: 100%; /* Full width buttons */
+}

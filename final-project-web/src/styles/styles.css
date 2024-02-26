@@ -5,12 +5,13 @@
 }
 
 .content-wrap {
-    flex: 1;  /* This makes the content area grow and push the footer down */
-    padding: 50px;  /* Add padding as needed */
+    flex: 1; /* This allows the content to expand */
+    padding: 50px; /* Or whatever padding you prefer */
+    background-color: #f5f5f5; /* Matches your theme, adjust as needed */
 }
 
 /* Pages */
-.home-page {
+.page-display {
 	background-color: #121212; /* Dark background */
 	color: #f5f5f5; /* Light text */
 	padding-top: 20px;

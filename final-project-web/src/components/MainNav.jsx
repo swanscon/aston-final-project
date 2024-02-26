@@ -13,7 +13,11 @@ export default function MainNav() {
 	return (
 		<Navbar className="navbar-custom">
 			<Container>
-				<NavbarBrand>TABLFG</NavbarBrand>
+				<NavbarBrand>
+					<NavLink className="nav-link" to="/">
+						TABLFG
+					</NavLink>
+				</NavbarBrand>
 				<Nav className="ml-auto">
 					<NavLink className="nav-link" to="/">
 						Home

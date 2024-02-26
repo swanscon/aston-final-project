@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Button, Card, Row } from "react-bootstrap";
+import { Form, Button, Card, Row, Col } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-bootstrap-time-picker";
@@ -212,47 +212,66 @@ export default function EditForm({
 						<Card.Body>
 							<Card.Title>Attendees</Card.Title>
 							{attendees.map((attendee, index) => (
-								<Row key={index}>
-									<Form.Control
-										type="text"
-										placeholder="First Name"
-										name="firstName"
-										value={attendee.firstName || ""}
-										onChange={(e) =>
-											handleAttendeeChange(index, "firstName", e.target.value)
-										}
-									/>
-
-									<Form.Control
-										type="text"
-										placeholder="Last Name"
-										name="lastName"
-										value={attendee.lastName || ""}
-										onChange={(e) =>
-											handleAttendeeChange(index, "lastName", e.target.value)
-										}
-									/>
-									<Form.Select
-										name="status"
-										value={attendee.status || ""}
-										onChange={(e) =>
-											handleAttendeeChange(index, "status", e.target.value)
-										}
-									>
-										<option value="Pending">Pending</option>
-										<option value="Accepted">Accepted</option>
-										<option value="Declined">Declined</option>
-									</Form.Select>
-									<Button
-										variant="danger"
-										onClick={() => handleRemoveAttendee(index)}
-									>
-										Remove
-									</Button>
+								<Row key={index} className="mb-3">
+									<Col>
+										<Form.Control
+											type="text"
+											placeholder="First Name"
+											name="firstName"
+											value={attendee.firstName || ""}
+											onChange={(e) =>
+												handleAttendeeChange(
+													index,
+													"firstName",
+													e.target.value
+												)
+											}
+										/>
+									</Col>
+									<Col>
+										<Form.Control
+											type="text"
+											placeholder="Last Name"
+											name="lastName"
+											value={attendee.lastName || ""}
+											onChange={(e) =>
+												handleAttendeeChange(
+													index,
+													"lastName",
+													e.target.value
+												)
+											}
+										/>
+									</Col>
+									<Col>
+										<Form.Select
+											name="status"
+											value={attendee.status || ""}
+											onChange={(e) =>
+												handleAttendeeChange(
+													index,
+													"status",
+													e.target.value
+												)
+											}
+										>
+											<option value="Pending">Pending</option>
+											<option value="Accepted">Accepted</option>
+											<option value="Declined">Declined</option>
+										</Form.Select>
+									</Col>
+									<Col xs="auto">
+										<Button
+											variant="danger"
+											onClick={() => handleRemoveAttendee(index)}
+										>
+											Remove
+										</Button>
+									</Col>
 								</Row>
 							))}
 
-							<Button onClick={handleAddAttendee} className="mt-2">
+							<Button onClick={handleAddAttendee} variant="secondary">
 								Add Attendee
 							</Button>
 						</Card.Body>

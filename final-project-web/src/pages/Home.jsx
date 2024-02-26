@@ -20,7 +20,7 @@ export default function Home() {
 		<>
 			<MainNav />
 			<div className="content-wrap">
-				<Container fluid className="home-page">
+				<Container fluid className="page-display">
 					<Row className="justify-content-center">
 						<Col md={8} lg={6}>
 							<h1 className="text-center mt-5">{welcome}</h1>

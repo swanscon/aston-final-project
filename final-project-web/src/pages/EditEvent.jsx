@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import MainNav from "../components/MainNav";
 import { useParams, NavLink, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Container, Card, Row, Col } from "react-bootstrap";
 import EditForm from "../components/EditForm";
 import MainFooter from "../components/MainFooter";
+import "../styles/event.css";
+import "../styles/styles.css";
 
 export default function EditEvent() {
 	let { id } = useParams();
@@ -174,24 +176,41 @@ export default function EditEvent() {
 					<p>Loading data...</p>
 				</>
 			) : (
-				<div className="container mt-4">
-					<h2>Editing: {eventDetails.name}</h2>
-					<EditForm
-						eventDetails={eventDetails}
-						onEventChange={onEventChange}
-						attendees={attendees}
-						onAttendeesChange={onAttendeesChange}
-						delAttendees={delAttendees}
-						onAttendeesDel={onAttendeesDel}
-					/>
-					<Button type="submit" onClick={handleSubmit}>
-						Save All
-					</Button>
-					<div>
-						<NavLink to={`/events/${id}`} className="btn btn-secondary mt-3">
-							Back
-						</NavLink>
-					</div>
+				<div className="content-wrap">
+					<Container fluid classname="page-display">
+						<Row className="justify-content-center">
+							<Col md={8} lg={6}>
+								<Card className="event-card">
+									<Card.Header className="event-header">
+										Editing: {eventDetails.name}
+									</Card.Header>
+									<Card.Body className="event-body">
+										<EditForm
+											eventDetails={eventDetails}
+											onEventChange={onEventChange}
+											attendees={attendees}
+											onAttendeesChange={onAttendeesChange}
+											delAttendees={delAttendees}
+											onAttendeesDel={onAttendeesDel}
+										/>
+										<Button
+											variant="primary"
+											className="event-button"
+											onClick={handleSubmit}
+										>
+											Save All
+										</Button>
+
+										<NavLink to={`/events/${id}`} className="d-block mt-3">
+											<Button variant="secondary" className="event-button">
+												Back
+											</Button>
+										</NavLink>
+									</Card.Body>
+								</Card>
+							</Col>
+						</Row>
+					</Container>
 				</div>
 			)}
 			<MainFooter />
