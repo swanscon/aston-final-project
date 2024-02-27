@@ -33,7 +33,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana
@@ -44,7 +44,7 @@ services:
       - prometheus
     restart: unless-stopped
     volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
 
   zipkin:
     image: openzipkin/zipkin
@@ -71,38 +71,89 @@ services:
       - zipkin
       - discovery-server
 
+  mysql-game:
+    container_name: mysql-game
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+      MYSQL_DATABASE: game-service
+    ports:
+    - "3310:3306"
+    volumes:
+    - ./game-service:/data/mysql
+    restart: always
+
+  mysql-event:
+    container_name: mysql-event
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+      MYSQL_DATABASE: event-service
+    ports:
+    - "3307:3306"
+    volumes:
+      - ./event-service:/data/mysql
+    restart: always
+
+  mysql-attendee:
+    container_name: mysql-attendee
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+      MYSQL_DATABASE: attendee-service
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./attendee-service:/data/mysql
+    restart: always
+
+  mysql-user:
+    container_name: mysql-user
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+      MYSQL_DATABASE: user-service
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./user-service:/data/mysql
+    restart: always
+
   game-service:
     container_name: game-service
     image: swanscon/game-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/game-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-game:3310/game-service
     depends_on:
       - discovery-server
       - api-gateway
+      - mysql-game
 
   event-service:
     container_name: event-service
     image: swanscon/event-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/event-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-event:3307/event-service
     depends_on:
       - zipkin
       - discovery-server
       - api-gateway
+      - mysql-event
 
   attendee-service:
     container_name: attendee-service
     image: swanscon/attendee-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/attendee-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-attendee:3308/attendee-service
     depends_on:
       - broker
       - zipkin
       - discovery-server
       - api-gateway
+      - mysql-attendee
 
   invitation-service:
     container_name: invitation-service
@@ -115,14 +166,25 @@ services:
       - discovery-server
       - api-gateway
 
-
   user-service:
     container_name: user-service
     image: swanscon/user-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-user:3309/user-service
     depends_on:
+      - zipkin
       - discovery-server
       - api-gateway
+      - mysql-user
 
-
+  react-app:
+    container_name: react-app
+    image: swanscon/react-app:latest
+    build:
+      context: ./final-project-web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway

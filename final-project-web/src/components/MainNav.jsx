@@ -46,7 +46,7 @@ export default function MainNav() {
 							</NavLink>
 						</>
 					) : (
-						<NavLink className="nav-link" to="#" onClick={handleLogout}>
+						<NavLink className="nav-link" onClick={handleLogout}>
 							Logout
 						</NavLink>
 					)}
