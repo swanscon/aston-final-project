@@ -97,8 +97,8 @@ export default function EventTable({ events, sortParam, sortAsc, setRefresh }) {
 						<th>Date</th>
 						<th>Start Time</th>
 						<th>End Time</th>
-						<th>Attendees</th>
 						<th>Description</th>
+						<th>Attendees</th>
 						<th>Links</th>
 					</tr>
 				</thead>
