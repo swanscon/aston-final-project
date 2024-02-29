@@ -18,13 +18,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(authenticationService.signup(userRequest), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(authenticationService.login(userRequest), HttpStatus.OK);
     }

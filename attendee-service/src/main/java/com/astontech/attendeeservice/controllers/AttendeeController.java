@@ -39,21 +39,21 @@ public class AttendeeController {
     }
 
     @PutMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> updateAttendee(@PathVariable Integer id, @RequestBody AttendeeRequest attendeeRequest) {
         attendeeService.updateAttendee(id, attendeeRequest);
         return new ResponseEntity<>("Attendee updated successfully.", HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{id}/{status}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> updateAttendeeStatus(@PathVariable Integer id, @PathVariable String status) {
         attendeeService.updateAttendeeStatus(id, status);
         return new ResponseEntity<>("Attendee status updated successfully.", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> deleteAttendee(@PathVariable Integer id) {
         attendeeService.deleteAttendee(id);
         return new ResponseEntity<>("Attendee deleted successfully.", HttpStatus.OK);

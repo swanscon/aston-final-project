@@ -37,14 +37,14 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> updateEvent(@PathVariable Integer id, @RequestBody EventRequest eventRequest) {
         eventService.updateEvent(id, eventRequest);
         return new ResponseEntity<>("Event updated successfully.", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> deleteEvent(@PathVariable Integer id) {
         eventService.deleteEvent(id);
         return new ResponseEntity<>("Event deleted successfully.", HttpStatus.OK);

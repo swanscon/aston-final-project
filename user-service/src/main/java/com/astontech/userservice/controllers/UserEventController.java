@@ -18,20 +18,20 @@ public class UserEventController {
     private final UserEventService userEventService;
 
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> createUserEvent(@RequestBody UserEventRequest userEventRequest) {
         userEventService.createUserEvent(userEventRequest);
         return new ResponseEntity<>("User Event created successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<List<UserEventResponse>> getEventIdsByUserId(@PathVariable Integer userId) {
         return new ResponseEntity<>(userEventService.getEventIdsByUserId(userId), HttpStatus.OK);
     }
 
     @DeleteMapping
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> deleteUserEvent(@RequestBody UserEventRequest userEventRequest) {
         userEventService.deleteUserEvent(userEventRequest);
         return new ResponseEntity<>("User Event deleted successfully", HttpStatus.OK);

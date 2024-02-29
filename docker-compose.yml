@@ -51,6 +51,8 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+    networks:
+      - my-network
 
   discovery-server:
     container_name: discovery-server
@@ -61,6 +63,8 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
+    networks:
+      - my-network
 
   api-gateway:
     container_name: api-gateway
@@ -70,6 +74,10 @@ services:
     depends_on:
       - zipkin
       - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - my-network
 
   mysql-game:
     container_name: mysql-game
@@ -82,6 +90,8 @@ services:
     volumes:
     - ./game-service:/data/mysql
     restart: always
+    networks:
+      - my-network
 
   mysql-event:
     container_name: mysql-event
@@ -94,6 +104,8 @@ services:
     volumes:
       - ./event-service:/data/mysql
     restart: always
+    networks:
+      - my-network
 
   mysql-attendee:
     container_name: mysql-attendee
@@ -106,6 +118,8 @@ services:
     volumes:
       - ./attendee-service:/data/mysql
     restart: always
+    networks:
+      - my-network
 
   mysql-user:
     container_name: mysql-user
@@ -118,42 +132,53 @@ services:
     volumes:
       - ./user-service:/data/mysql
     restart: always
+    networks:
+      - my-network
 
   game-service:
     container_name: game-service
     image: swanscon/game-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-game:3310/game-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-game:3306/game-service
+      - WAIT_FOR_DB_HOST=mysql-game:3306
     depends_on:
       - discovery-server
       - api-gateway
       - mysql-game
+    networks:
+      - my-network
 
   event-service:
     container_name: event-service
     image: swanscon/event-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-event:3307/event-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-event:3306/event-service
+      - WAIT_FOR_DB_HOST=mysql-event:3306
     depends_on:
       - zipkin
       - discovery-server
       - api-gateway
       - mysql-event
+    networks:
+      - my-network
 
   attendee-service:
     container_name: attendee-service
     image: swanscon/attendee-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-attendee:3308/attendee-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-attendee:3306/attendee-service
+      - WAIT_FOR_DB_HOST=mysql-attendee:3306
     depends_on:
       - broker
       - zipkin
       - discovery-server
       - api-gateway
       - mysql-attendee
+    networks:
+      - my-network
 
   invitation-service:
     container_name: invitation-service
@@ -165,18 +190,23 @@ services:
       - zipkin
       - discovery-server
       - api-gateway
+    networks:
+      - my-network
 
   user-service:
     container_name: user-service
     image: swanscon/user-service:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-user:3309/user-service
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-user:3306/user-service
+      - WAIT_FOR_DB_HOST=mysql-user:3306
     depends_on:
       - zipkin
       - discovery-server
       - api-gateway
       - mysql-user
+    networks:
+      - my-network
 
   react-app:
     container_name: react-app
@@ -188,3 +218,9 @@ services:
       - "80:80"
     depends_on:
       - api-gateway
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

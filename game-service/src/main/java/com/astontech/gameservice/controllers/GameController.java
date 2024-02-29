@@ -39,14 +39,14 @@ public class GameController {
     }
 
     @PutMapping("/{gameId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> updateGame(@PathVariable Integer gameId, @RequestBody GameRequest gameRequest) {
         gameService.updateGame(gameId, gameRequest);
         return new ResponseEntity<>("Game updated successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{gameId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> deleteGame(@PathVariable Integer gameId) {
         gameService.deleteGame(gameId);
         return new ResponseEntity<>("Game deleted successfully", HttpStatus.OK);

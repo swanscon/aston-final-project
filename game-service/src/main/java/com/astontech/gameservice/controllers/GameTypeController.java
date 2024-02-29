@@ -29,20 +29,20 @@ public class GameTypeController {
     }
 
     @GetMapping("/{gameTypeId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<GameTypeResponse> getGameTypeById(@PathVariable Integer gameTypeId) {
         return new ResponseEntity<>(gameTypeService.getGameTypeById(gameTypeId), HttpStatus.OK);
     }
 
     @PutMapping("/{gameTypeId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> updateGameType(@PathVariable Integer gameTypeId, @RequestBody GameTypeRequest gameTypeRequest) {
         gameTypeService.updateGameType(gameTypeId, gameTypeRequest);
         return new ResponseEntity<>("Game Type updated successfully", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{gameTypeId}")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
     public ResponseEntity<String> deleteGameType(@PathVariable Integer gameTypeId) {
         gameTypeService.deleteGameType(gameTypeId);
         return new ResponseEntity<>("Game Type deleted successfully", HttpStatus.OK);
