@@ -52,77 +52,191 @@ services:
     ports:
       - "9411:9411"
 
-#  discovery-server:
-#    container_name: discovery-server
-#    image: swanscon/discovery-server:latest
-#    ports:
-#      - "8761:8761"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - zipkin
-#
-#  api-gateway:
-#    container_name: api-gateway
-#    image: swanscon/api-gateway:latest
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - zipkin
-#      - discovery-server
-#
-#  game-service:
-#    container_name: game-service
-#    image: swanscon/game-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/game-service
-#    depends_on:
-#      - discovery-server
-#      - api-gateway
-#
-#  event-service:
-#    container_name: event-service
-#    image: swanscon/event-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/event-service
-#    depends_on:
-#      - zipkin
-#      - discovery-server
-#      - api-gateway
-#
-#  attendee-service:
-#    container_name: attendee-service
-#    image: swanscon/attendee-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/attendee-service
-#    depends_on:
-#      - broker
-#      - zipkin
-#      - discovery-server
-#      - api-gateway
-#
-#  invitation-service:
-#    container_name: invitation-service
-#    image: swanscon/invitation-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - broker
-#      - zipkin
-#      - discovery-server
-#      - api-gateway
-#
-#
-#  user-service:
-#    container_name: user-service
-#    image: swanscon/user-service:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    depends_on:
-#      - discovery-server
-#      - api-gateway
+  api-gateway:
+    image: api-gateway:dev  # Replace with your actual image path
+    container_name: api-gateway
+    build:
+      context: ./api-gateway  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"  # Port mapping as required
+    depends_on:
+      - discovery-server
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  discovery-server:
+    image: discovery-server:dev  # Replace with your actual image path
+    container_name: discovery-server
+    build:
+      context: ./discovery-server  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  invitation-service:
+    image: invitation-service:dev  # names the built image
+    container_name: invitation-service
+    build:
+      context: ./invitation-service  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8184:8184"
+    depends_on:
+      - discovery-server
+      - api-gateway
+      - broker
+      - zipkin
+      - attendee-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  # Services with their own MySQL database
+  game-service:
+    image: game-service:dev  # Replace with your actual image path
+    container_name: game-service
+    build:
+      context: ./game-service  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8181:8181"
+    depends_on:
+      - game-db
+      - discovery-server
+      - api-gateway
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://game-db:3306/game_service
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tombertAT9!
+      SPRING_PROFILES_ACTIVE: docker
+
+  game-db:
+    image: mysql:5.7
+    container_name: game-db
+    environment:
+      MYSQL_DATABASE: game_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: tombertAT9!
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+    ports:
+      - "3307:3306"  # Make sure each database uses unique host ports
+    volumes:
+      - game-db-data:/var/lib/mysql
+
+  event-service:
+    image: event-service:dev  # Replace with your actual image path
+    container_name: event-service
+    build:
+      context: ./event-service  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8182:8182"
+    depends_on:
+      - event-db
+      - discovery-server
+      - api-gateway
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://event-db:3306/event_service
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tombertAT9!
+      SPRING_PROFILES_ACTIVE: docker
+
+  event-db:
+    image: mysql:5.7
+    container_name: event-db
+    environment:
+      MYSQL_DATABASE: event_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: tombertAT9!
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+    ports:
+      - "3308:3306"  # Make sure each database uses unique host ports
+    volumes:
+      - event-db-data:/var/lib/mysql
 
 
+  attendee-service:
+    image: attendee-service:dev  # Replace with your actual image path
+    container_name: attendee-service
+    build:
+      context: ./attendee-service  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8183:8183"
+    depends_on:
+      - attendee-db
+      - discovery-server
+      - api-gateway
+      - broker
+      - zipkin
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://attendee-db:3306/attendee_service
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tombertAT9!
+      SPRING_PROFILES_ACTIVE: docker
+
+  attendee-db:
+    image: mysql:5.7
+    container_name: attendee-db
+    environment:
+      MYSQL_DATABASE: attendee_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: tombertAT9!
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+    ports:
+      - "3309:3306"  # Make sure each database uses unique host ports
+    volumes:
+      - attendee-db-data:/var/lib/mysql
+
+  user-service:
+    image: user-service:dev  # Replace with your actual image path
+    container_name: user-service
+    build:
+      context: ./user-service  # Relative path
+      dockerfile: Dockerfile
+    ports:
+      - "8185:8185"
+    depends_on:
+      - user-db
+      - discovery-server
+      - api-gateway
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-db:3306/user_service
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tombertAT9!
+      SPRING_PROFILES_ACTIVE: docker
+
+  user-db:
+    image: mysql:5.7
+    container_name: user-db
+    environment:
+      MYSQL_DATABASE: user_service
+      MYSQL_USER: root
+      MYSQL_PASSWORD: tombertAT9!
+      MYSQL_ROOT_PASSWORD: tombertAT9!
+    ports:
+      - "3310:3306"  # Make sure each database uses unique host ports
+    volumes:
+      - user-db-data:/var/lib/mysql
+
+  react-app:
+    build:
+      context: ./final-project-web  # Replace with the path to your React application directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Map port 80 from the container to port 3000 on the host
+    restart: unless-stopped
+
+# Volumes for persistence
+volumes:
+  game-db-data:
+  event-db-data:
+  attendee-db-data:
+  user-db-data:
+  # Define more volumes for other databases
+
+# Networks to facilitate communication between containers
+networks:
+  default:  # Uses a default network for inter-service communication
