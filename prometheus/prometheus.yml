@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['host.docker.internal:8081']
+
+  - job_name: 'discovery-server'
+    static_configs:
+      - targets: ['host.docker.internal:8761']
+
+  - job_name: 'game-service'
+    static_configs:
+      - targets: ['host.docker.internal:8181']
+
+  - job_name: 'event-service'
+    static_configs:
+      - targets: ['host.docker.internal:8182']
+
+  - job_name: 'attendee-service'
+    static_configs:
+      - targets: ['host.docker.internal:8183']
+
+  - job_name: 'invitation-service'
+    static_configs:
+      - targets: ['host.docker.internal:8184']
+
+  - job_name: 'user-service'
+    static_configs:
+      - targets: [ 'host.docker.internal:8185' ]

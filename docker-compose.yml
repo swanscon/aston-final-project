@@ -52,77 +52,77 @@ services:
     ports:
       - "9411:9411"
 
-  discovery-server:
-    container_name: discovery-server
-    image: swanscon/discovery-server:latest
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - zipkin
-
-  api-gateway:
-    container_name: api-gateway
-    image: swanscon/api-gateway:latest
-    ports:
-      - "8081:8081"
-    depends_on:
-      - zipkin
-      - discovery-server
-
-  game-service:
-    container_name: game-service
-    image: swanscon/game-service:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/game-service
-    depends_on:
-      - discovery-server
-      - api-gateway
-
-  event-service:
-    container_name: event-service
-    image: swanscon/event-service:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/event-service
-    depends_on:
-      - zipkin
-      - discovery-server
-      - api-gateway
-
-  attendee-service:
-    container_name: attendee-service
-    image: swanscon/attendee-service:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/attendee-service
-    depends_on:
-      - broker
-      - zipkin
-      - discovery-server
-      - api-gateway
-
-  invitation-service:
-    container_name: invitation-service
-    image: swanscon/invitation-service:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - broker
-      - zipkin
-      - discovery-server
-      - api-gateway
-
-
-  user-service:
-    container_name: user-service
-    image: swanscon/user-service:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - discovery-server
-      - api-gateway
+#  discovery-server:
+#    container_name: discovery-server
+#    image: swanscon/discovery-server:latest
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - zipkin
+#
+#  api-gateway:
+#    container_name: api-gateway
+#    image: swanscon/api-gateway:latest
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - zipkin
+#      - discovery-server
+#
+#  game-service:
+#    container_name: game-service
+#    image: swanscon/game-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/game-service
+#    depends_on:
+#      - discovery-server
+#      - api-gateway
+#
+#  event-service:
+#    container_name: event-service
+#    image: swanscon/event-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/event-service
+#    depends_on:
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#
+#  attendee-service:
+#    container_name: attendee-service
+#    image: swanscon/attendee-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/attendee-service
+#    depends_on:
+#      - broker
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#
+#  invitation-service:
+#    container_name: invitation-service
+#    image: swanscon/invitation-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - broker
+#      - zipkin
+#      - discovery-server
+#      - api-gateway
+#
+#
+#  user-service:
+#    container_name: user-service
+#    image: swanscon/user-service:latest
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - discovery-server
+#      - api-gateway
 
 

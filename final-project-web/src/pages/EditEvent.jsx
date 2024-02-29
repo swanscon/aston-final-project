@@ -177,7 +177,7 @@ export default function EditEvent() {
 				</>
 			) : (
 				<div className="content-wrap">
-					<Container fluid classname="page-display">
+					<Container fluid className="page-display">
 						<Row className="justify-content-center">
 							<Col md={8} lg={6}>
 								<Card className="event-card">
